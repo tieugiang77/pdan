@@ -1,0 +1,883 @@
+﻿
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-US"><head id="Head">
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type"><title>
+	TẠO-GHÉP DÀN ĐB 3D,4D
+</title>
+<title>Tạo dàn xổ số | Ứng dụng mức số</title>
+<meta id="MetaDescription" name="DESCRIPTION" content=" công cụ mức số">
+<meta id="MetaKeywords" name="KEYWORDS" content=",DotNetNuke,DNN">
+<meta id="MetaGenerator" name="GENERATOR" content="DotNetNuke ">
+<meta id="MetaRobots" name="ROBOTS" content="INDEX, FOLLOW">
+<link href="/" rel="canonical"><link rel="SHORTCUT ICON" href="/favicon.ico" type="image/x-icon">   
+ <style>
+
+<style>
+/* Tab container styling */
+.tabs {
+    width: 80%;
+    margin: 0 auto;
+}
+
+/* Styling for the tab links */
+.tab-links {
+    list-style: none;
+    padding: 15px;
+    display: flex;
+    margin-bottom: 0px;
+    justify-content: center;
+}
+
+/* Styling for each tab */
+.tab-links li {
+    margin-right: 10px;
+}
+
+/* Styling for the tab links */
+.tab-links a {
+    padding: 10px 20px;
+    display: block;
+    text-decoration: none;
+    border: 2px solid #d32f2f; /* Red border */
+    border-radius: 8px;
+    color: #b71c1c; /* Dark red text */
+    background-color: #fff3e0; /* Light golden background */
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+/* Hover effect for tab links */
+.tab-links a:hover {
+    background-color: #ffd54f; /* Soft yellow hover */
+    color: #c62828;
+    border-color: #c62828;
+}
+
+/* Styling for the active tab */
+.tab-links .active {
+    background-color: #d32f2f; /* Strong red */
+    color: #fff8e1; /* Light yellow text */
+    border-color: #b71c1c;
+}
+
+/* Styling for tab content */
+.tab-content {
+    display: none;
+}
+
+/* Styling for each tab content */
+.tab-pane {
+    padding: 10px;
+    border: 2px solid #d32f2f;
+    border-radius: 8px;
+    background-color: #fffde7; /* Very light yellow */
+    color: #4e342e;
+}
+
+/* Display active tab content */
+.tab-pane.active {
+    display: block;
+}
+
+/* Reset margin */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Navbar styling */
+.navbar {
+    overflow: hidden;
+    background-color: #b71c1c; /* Dark red */
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Navbar links */
+.navbar a {
+    float: left;
+    display: block;
+    color: #ffeb3b; /* Bright yellow */
+    text-align: center;
+    padding: 10px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    transition: background 0.3s ease;
+}
+
+/* Navbar hover effect */
+.navbar a:hover {
+    background-color: #e53935; /* Slightly lighter red */
+    color: #fffde7;
+}
+
+/* Main content */
+.main {
+    padding: 10px;
+    margin-top: 50px; /* Adjust to navbar height */
+    min-height: 800px;
+    background-color: #fff8e1; /* Light yellow background */
+}
+</style>
+
+<script type="text/javascript">
+function TaoMucSo3D() {
+    var dauvao = document.getElementById('MainContent_txtInput').value;
+    var daura = document.getElementById('MainContent_txtOutput');
+    var listOfObjects = [];
+
+    // ** Chuẩn hóa đầu vào **
+    // Thay tất cả các ký tự phân cách (khoảng trắng, dấu chấm, phẩy, chấm phẩy, gạch ngang) bằng dấu phẩy
+    dauvao = dauvao.replace(/[\s.,;|-]+/g, ',')
+                   .replace(/^,+|,+$/g, ''); // Loại bỏ dấu phẩy thừa ở đầu và cuối
+
+    let uniquePairs = new Set();
+    let allPairs = [];
+
+    dauvao.split(',').forEach(num => {
+        num = num.trim();
+        if (num.length === 3) {
+            // Nếu số đã đúng định dạng 3 chữ số, thêm vào danh sách cặp số
+            allPairs.push(num);
+            uniquePairs.add(num);
+        } else if (num.length > 3) {
+            // Nếu số có nhiều hơn 3 chữ số, tách thành các cặp liên tiếp
+            for (let i = 0; i <= num.length - 3; i++) {
+                let pair = num.slice(i, i + 3);
+                allPairs.push(pair);
+                uniquePairs.add(pair);
+            }
+        }
+    });
+
+    // ** Tạo bản đồ lưu số lần xuất hiện **
+    let dauvaoMap = new Map();
+    allPairs.forEach(num => {
+        num = num.trim();
+        if (num !== '') {
+            dauvaoMap.set(num, (dauvaoMap.get(num) || 0) + 1);
+        }
+    });
+
+    // ** Tạo danh sách số từ 000 đến 999 **
+    for (let i = 0; i <= 999; i++) {
+        let lo = i.toString().padStart(3, '0'); // Định dạng số 3 chữ số
+        let count = dauvaoMap.get(lo) || 0;
+        listOfObjects.push({ lo: lo, count: count });
+    }
+
+    // ** Sắp xếp danh sách theo số lần xuất hiện **
+    listOfObjects.sort((a, b) => b.count - a.count); // Sắp xếp giảm dần theo count
+
+    // ** Gom nhóm theo mức **
+    let value1 = '';
+    let maxLevel = Math.max(...listOfObjects.map(obj => obj.count)); // Xác định mức cao nhất thực tế
+    let listLevels = Array(maxLevel + 1).fill().map(() => []);       // Tạo mảng chứa các mức thực tế
+    listOfObjects.forEach(obj => {
+        listLevels[obj.count].push(obj.lo);
+    });
+
+    // ** Duyệt qua từng mức để tạo kết quả **
+    listLevels.forEach((nums, level) => {
+        if (nums.length > 0) {
+            // Xử lý định dạng mức
+            let levelStr = level < 10 
+                ? level.toString()  // Giữ nguyên cho mức dưới 10
+                : level.toString().split('').join(' '); // Tách chữ số cho mức từ 10 trở lên
+
+            // Định dạng số lượng
+            let numCountStr = nums.length === 1000 
+                ? '1 0 0 0'  // Xử lý đặc biệt cho 1000 số
+                : nums.length.toString().split('').join(' ');
+
+            // Thêm vào kết quả
+            value1 += `Mức: ${levelStr} (${numCountStr}) số\n${nums.join(',')}\n`;
+        }
+    });
+
+    // ** Xuất kết quả **
+    daura.value = value1;
+}
+//Tạo mức 4d
+function TaoMucSo4D() {
+    var dauvao = document.getElementById('MainContent_txtInput').value;
+    var daura = document.getElementById('MainContent_txtOutput');
+    var listOfObjects = [];
+
+    // ** Chuẩn hóa đầu vào **
+    // Thay tất cả các ký tự phân cách (khoảng trắng, dấu chấm, phẩy, chấm phẩy, gạch ngang) bằng dấu phẩy
+    dauvao = dauvao.replace(/[\s.,;|-]+/g, ',')
+                   .replace(/^,+|,+$/g, ''); // Loại bỏ dấu phẩy thừa ở đầu và cuối
+
+    let uniquePairs = new Set();
+    let allPairs = [];
+
+    dauvao.split(',').forEach(num => {
+        num = num.trim();
+        if (num.length === 4) {
+            // Nếu số đã đúng định dạng 4 chữ số, thêm vào danh sách cặp số
+            allPairs.push(num);
+            uniquePairs.add(num);
+        } else if (num.length > 4) {
+            // Nếu số có nhiều hơn 4 chữ số, tách thành các cặp liên tiếp
+            for (let i = 0; i <= num.length - 4; i++) {
+                let pair = num.slice(i, i + 4);
+                allPairs.push(pair);
+                uniquePairs.add(pair);
+            }
+        }
+    });
+
+    // ** Tạo bản đồ lưu số lần xuất hiện **
+    let dauvaoMap = new Map();
+    allPairs.forEach(num => {
+        num = num.trim();
+        if (num !== '') {
+            dauvaoMap.set(num, (dauvaoMap.get(num) || 0) + 1);
+        }
+    });
+
+    // ** Tạo danh sách số từ 0000 đến 9999 **
+    for (let i = 0; i <= 9999; i++) {
+        let lo = i.toString().padStart(4, '0'); // Định dạng số 4 chữ số
+        let count = dauvaoMap.get(lo) || 0;
+        listOfObjects.push({ lo: lo, count: count });
+    }
+
+    // ** Sắp xếp danh sách theo số lần xuất hiện **
+    listOfObjects.sort((a, b) => b.count - a.count); // Sắp xếp giảm dần theo count
+
+    // ** Gom nhóm theo mức **
+    let value1 = '';
+    let maxLevel = Math.max(...listOfObjects.map(obj => obj.count)); // Xác định mức cao nhất thực tế
+    let listLevels = Array(maxLevel + 1).fill().map(() => []);       // Tạo mảng chứa các mức thực tế
+    listOfObjects.forEach(obj => {
+        listLevels[obj.count].push(obj.lo);
+    });
+
+    // ** Duyệt qua từng mức để tạo kết quả **
+    listLevels.forEach((nums, level) => {
+        if (nums.length > 0) {
+            // Xử lý định dạng mức
+            let levelStr = level < 10 
+                ? level.toString()  // Giữ nguyên cho mức dưới 10
+                : level.toString().split('').join(' '); // Tách chữ số cho mức từ 10 trở lên
+
+            // Định dạng số lượng
+            let numCountStr = nums.length === 10000 
+                ? '1 0 0 0 0'  // Xử lý đặc biệt cho 10000 số
+                : nums.length.toString().split('').join(' ');
+
+            // Thêm vào kết quả
+            value1 += `Mức: ${levelStr} (${numCountStr}) số\n${nums.join(',')}\n`;
+        }
+    });
+
+    // ** Xuất kết quả **
+    daura.value = value1;
+}
+// kết thúc tạo mức 4D
+
+// bắt đầu tách 3d 4d
+function kdc_Tach3D() {
+    // Lấy nội dung từ ô textarea kdc_txtInput
+    var input = document.getElementById("kdc_txtInput").value;
+
+    // Tách các số (giả sử được phân tách bằng dấu phẩy)
+    var numbers = input.split(",");
+
+    // Khai báo Set riêng để loại bỏ số trùng lặp trong từng output
+    var bcSet = new Set(); // Dùng cho ô kdc_txtBC (chỉ xử lý với số 4 chữ số)
+    var cdSet = new Set(); // Dùng cho ô kdc_txtCD
+    var deSet = new Set(); // Dùng cho ô kdc_txtDE
+
+    // Cờ để kiểm tra xem có số 4 chữ số hay không
+    var hasFourDigit = false;
+
+    // Duyệt qua từng số trong input
+    numbers.forEach(function (num) {
+        if (num.length === 3) { // Xử lý số có 3 chữ số
+            cdSet.add(num.substring(0, 2)); // Lấy 2 chữ số đầu (CD) và thêm vào cdSet
+            deSet.add(num.substring(1, 3)); // Lấy 2 chữ số cuối (DE) và thêm vào deSet
+        } else if (num.length === 4) { // Xử lý số có 4 chữ số
+            hasFourDigit = true; // Đánh dấu có số 4 chữ số
+            bcSet.add(num.substring(0, 2)); // Lấy 2 chữ số đầu (BC) và thêm vào bcSet
+            cdSet.add(num.substring(1, 3)); // Lấy 2 chữ số giữa (CD) và thêm vào cdSet
+            deSet.add(num.substring(2, 4)); // Lấy 2 chữ số cuối (DE) và thêm vào deSet
+        }
+    });
+
+    // Chuyển Set thành mảng để xử lý
+    var bcArray = Array.from(bcSet);
+    var cdArray = Array.from(cdSet);
+    var deArray = Array.from(deSet);
+
+    // Đếm số lượng và xử lý định dạng số đếm
+    function formatCount(count) {
+        if (count >= 10) {
+            // Nếu số lượng >= 10, tách bằng khoảng trắng
+            return count.toString().split("").join(" ");
+        }
+        return count.toString(); // Nếu < 10, giữ nguyên
+    }
+
+    // Hiển thị kết quả vào các ô textarea
+    if (hasFourDigit) {
+        // Chỉ hiển thị kết quả BC nếu có số 4 chữ số
+        document.getElementById("kdc_txtBC").value = `(${formatCount(bcArray.length)}) số\n${bcArray.join(",")}`;
+    } else {
+        // Làm trống ô kdc_txtBC nếu không có số 4 chữ số
+        document.getElementById("kdc_txtBC").value = "";
+    }
+    document.getElementById("kdc_txtCD").value = `(${formatCount(cdArray.length)}) số\n${cdArray.join(",")}`;
+    document.getElementById("kdc_txtDE").value = `(${formatCount(deArray.length)}) số\n${deArray.join(",")}`;
+}
+// kết thúc tách 3d 4d
+
+        function getWildcardNum(val) {
+            return '0'.repeat(3 - String(val).length) + val;
+        }
+
+        function countString(str, search) {
+            var count = 0;
+            var index = str.indexOf(search);
+            
+            while (index != -1) {
+                count++;
+                index = str.indexOf(search, index + 1);
+            }
+            return count;
+        }
+
+        function TaoMucSo(dauvao) {
+            var eachLine = dauvao.split(',');
+            var listOfObjects = [];
+            var list_lo = [];
+            for (i = 0; i <= 99; i++) {
+                var lo, count;
+                if (i <= 9) lo = '0' + i;
+                else lo = i;
+
+                count = countString(dauvao, lo);
+                listOfObjects.push({ lo: lo, count: count });
+
+            }
+            listOfObjects.sort(function (a, b) {
+                return a.count - b.count;
+            })
+            var value1, value2, check;
+            value1 = '';
+            value2 = '';
+            for (var cc = 0; cc <= 100000; cc++) {
+                for (var i in listOfObjects) {
+                    if (listOfObjects[i].count == cc) {
+                        check = true;
+                        value2 += listOfObjects[i].lo + ' ';
+                        list_lo.push(listOfObjects[i].lo)
+                    }
+                }
+                list_lo.sort();
+                if (check == true) {
+                    value1 += 'Mức: ' + cc + ' (' + list_lo.length + ' số) ' + '\n' + list_lo.join(' ') + '\n';
+                    check = false;
+                    value2 = '';
+                    list_lo.length = 0;
+                }
+            }
+            return value1;
+        }
+
+        function countString(str, search) {
+            var count = 0;
+            var index = str.indexOf(search);
+            while (index != -1) {
+                count++;
+                index = str.indexOf(search, index + 1);
+            }
+            return count;
+        }
+        function k_Copy() {
+			  var copyText = document.getElementById("kdh_txtOutput");
+			  copyText.select();
+			  document.execCommand("copy");
+		}
+        function k_Copy_1() {
+			  var copyText = document.getElementById("kdc_txtDE");
+			  copyText.select();
+			  document.execCommand("copy");
+		}		
+        function k_Copy_2() {
+			  var copyText = document.getElementById("MainContent_txtDan1");
+			  copyText.select();
+			  document.execCommand("copy");
+		}   
+        function k_Copy_3() {
+			  var copyText = document.getElementById("gc_txtOutput");
+			  copyText.select();
+			  document.execCommand("copy");
+		}   		
+        function kdc_Clear() {
+            document.getElementById('kdh_txtCD').value = '';
+            document.getElementById('kdh_txtDE').value = '';
+            document.getElementById('kdh_txtBC').value = '';
+            document.getElementById('kdh_txtOutput').value = '';			
+        }
+        function kdc_Clear_gc() {
+            document.getElementById('gc_txtCang').value = '';
+            document.getElementById('gc_txtDan').value = '';
+            document.getElementById('gc_txtOutput').value = '';			
+        }		
+        function kdc_Clear_34() {
+            document.getElementById('kdc_txtCD').value = '';
+            document.getElementById('kdc_txtDE').value = '';
+            document.getElementById('kdc_txtBC').value = '';
+            document.getElementById('kdc_txtInput').value = '';			
+        }
+		
+        function kdc_Clear_1() {
+            document.getElementById('MainContent_txtInput').value = '';
+            document.getElementById('MainContent_txtOutput').value = '';			
+         }
+// code ghép càng 3D
+function GhepCang() {
+    var kc_cd = document.getElementById('gc_txtCang');
+    var kcd_de = document.getElementById('gc_txtDan');
+
+    var daura = document.getElementById('gc_txtOutput');
+    var total = document.getElementById('lbl_total');
+
+    var dan = '';
+
+    // Lấy dữ liệu từ `gc_txtCang` và xử lý
+    var cd = myTrim(kc_cd.value.trim());
+    var array_cd = [];
+    if (/[,\.\s]/.test(cd)) {
+        // Nếu có dấu phân cách (dấu phẩy, dấu chấm, hoặc khoảng trắng), tách theo chúng
+        array_cd = cd.split(/[\s,\.]+/).filter(char => char !== '');
+    } else {
+        // Nếu không có dấu phân cách, tách thành từng chữ số
+        array_cd = cd.split('');
+    }
+
+    // Lấy dữ liệu từ `gc_txtDan` và xử lý
+    var de = myTrim(kcd_de.value.trim());
+    var array_de = de.split(',').filter(item => item !== ''); // Tách thành mảng theo dấu phẩy
+
+    // Kiểm tra định dạng của các phần tử trong `array_de`
+    array_de = array_de.filter(item => /^\d{2,4}$/.test(item)); // Chỉ giữ lại các số có từ 2 đến 4 chữ số
+
+    // Nếu `array_cd` hoặc `array_de` rỗng thì không thực hiện
+    if (array_cd.length === 0 || array_de.length === 0) {
+        daura.value = '';
+        total.innerText = 0;
+        return;
+    }
+
+    // Tạo dàn số: Kết hợp từng số của `array_cd` với toàn bộ số của `array_de`
+    array_cd.forEach(c => {
+        array_de.forEach(d => {
+            dan += `${c}${d},`; // Kết hợp số từ CD với toàn bộ số từ DE
+        });
+    });
+
+    dan = dan.slice(0, -1); // Xóa dấu phẩy cuối
+    daura.value = dan;
+
+    var count_dan = dan.split(',').length;
+    total.innerText = count_dan;
+}
+        function kdc_Tao3D() {
+            var k_bc = document.getElementById('kdh_txtBC');
+            var kc_cd = document.getElementById('kdh_txtCD');
+            var kcd_de = document.getElementById('kdh_txtDE');
+
+            var daura = document.getElementById('kdh_txtOutput');
+
+            var dan = '';
+
+
+            var bc = k_bc.value.trim();
+            var array_bc = myTrim(bc).split(',');
+            if (array_bc.length == 1) array_bc = myTrim(bc).split('-');
+            if (array_bc.length == 1) array_bc = myTrim(bc).split(/\s+/g);
+
+
+            var cd = kc_cd.value.trim();
+            var array_cd = myTrim(cd).split(',');
+            if (array_cd.length == 1) array_cd = myTrim(cd).split('-');
+            if (array_cd.length == 1) array_cd = myTrim(cd).split(/\s+/g);
+
+            var de = kcd_de.value.trim();
+            var array_de = myTrim(de).split(',');
+            if (array_de.length == 1) array_de = myTrim(de).split('-');
+            if (array_de.length == 1) array_de = myTrim(de).split(/\s+/g);
+
+            //3D
+            dan = tsb_XY(array_cd, array_de);
+            var total = document.getElementById('kdh_lbl_total');
+            var count_dan = dan.split(',').length;
+            total.innerText = count_dan - 1;
+
+            daura.value = dan;
+        }
+
+        function kdc_Tao4D() {
+            var k_bc = document.getElementById('kdh_txtBC');
+            var kc_cd = document.getElementById('kdh_txtCD');
+            var kcd_de = document.getElementById('kdh_txtDE');
+
+            var daura = document.getElementById('kdh_txtOutput');
+
+            var dan = '';
+
+
+            var bc = k_bc.value.trim();
+            var array_bc = myTrim(bc).split(',');
+            if (array_bc.length == 1) array_bc = myTrim(bc).split('-');
+            if (array_bc.length == 1) array_bc = myTrim(bc).split(/\s+/g);
+
+
+            var cd = kc_cd.value.trim();
+            var array_cd = myTrim(cd).split(',');
+            if (array_cd.length == 1) array_cd = myTrim(cd).split('-');
+            if (array_cd.length == 1) array_cd = myTrim(cd).split(/\s+/g);
+
+            var de = kcd_de.value.trim();
+            var array_de = myTrim(de).split(',');
+            if (array_de.length == 1) array_de = myTrim(de).split('-');
+            if (array_de.length == 1) array_de = myTrim(de).split(/\s+/g);
+
+            if (array_cd.length == 1) {
+                dan = tsb_4D(array_bc, array_de);
+                var total = document.getElementById('kdh_lbl_total');
+                var count_dan = dan.split(',').length;
+                total.innerText = count_dan - 1;
+            } else {
+
+                //3D
+                var dan_3D = tsb_XY(array_cd, array_de);
+                dan = tsb_XY(array_bc, dan_3D.split(','));
+                var total = document.getElementById('kdh_lbl_total');
+                var count_dan = dan.split(',').length;
+                total.innerText = count_dan - 1;
+            }
+
+            daura.value = dan;
+        }
+		
+        function tsb_XY(arr1, arr2) {
+            var dan = '';
+            for (var i = 0; i < arr1.length; i++) {
+                if (myTrim(arr1[i].toString()) != '') {
+                    var xy = myTrim(arr1[i].toString());
+                    var xyLength = xy.length;
+                    var lastChar_xy = xy.charAt(xyLength - 1);
+                    var xChar = xy.substring(0, xyLength - 1);
+
+                    for (var j = 0; j < arr2.length; j++) {
+                        if (myTrim(arr2[j].toString()) != '') {
+                            var yz = myTrim(arr2[j].toString());
+                            var yzLength = yz.length;
+                            var lastChar_yz = yz.charAt(yzLength - 1);
+                            var yChar;
+                            if (yzLength < 3) {
+                                yChar = yz.substring(0, yzLength - 1);
+                            } else {
+                                yChar = yz.substring(0, yzLength - 2);
+                            }
+                            if (lastChar_xy == yChar) {
+                                dan += xChar + '' + yz + ',';
+                            }
+                        }
+                    }
+                }
+            }
+            return dan;
+        }
+
+
+        function myTrim(x) {
+            return x.replace(/^\s+|\s+$/gm, '');
+        }
+    </script>
+    </head>
+<body id="Body">
+    <div class="tabs">
+        <!-- Tab links -->
+        <ul class="tab-links">
+            <li><a href="index.html" class="tab-link" data-tab="tab1"; style="background-color:#74c1d3;"><b>HOME</b></a></li>
+            <li><a href="index.html" class="tab-link" data-tab="tab2"; style="background-color:yellow;"><b>TẠO DÀN 2D</b></a></li>
+            <li><a href="3d.html" class="tab-link" data-tab="tab3"; style="background-color:#74c1d3;"><b>TẠO DÀN 3D-4D</b></a></li>            
+            <li><a href="radom.html" class="tab-link" data-tab="tab4"; style="background-color:#74c1d3;"><b>DÀN 9X0X NGẪU NHIÊN</b></a></li>            
+			<li><a href="chao.html" class="tab-link" data-tab="tab5"; style="background-color:#74c1d3;"><b>BẢNG TÍNH CHÃO</b></a></li>
+        </ul>
+        
+    </div>
+    
+  
+ 
+<div id="dnn_ctr427_ModuleContent" class="DNNModuleContent ModTKTAODANC">
+	
+
+  <center> <table id="MainContent_Table1" style="width: 1000px; background-color: #74c1d3; border-radius: 5px;">
+        <tbody>
+            <tr>
+                <td style="width: 400px;">
+                    <span id="MainContent_Label1" style="display: inline-block; font-size: Medium; width: 500px;">
+                        Nhập các dàn số  <input type="submit" onclick="kdc_Clear_1()" name="ctl00$MainContent$btnClear3" value="Xóa" id="MainContent_btnClear3" style="width: 90px; height: 30px; margin-right: 5px; border-radius: 4px;"/></span>
+                </td>
+                <td>
+                    <input name="ctl00$MainContent$btnAdd0" value="Tạo Mức 3D" id="MainContent_btnAdd0" type="submit" onclick="TaoMucSo3D()" style="width: 90px; height: 30px; margin-right: 5px; border-radius: 4px;"/>
+                    <input name="ctl00$MainContent$btnAdd4" value="Tạo Mức 4D" id="MainContent_btnAdd4" onclick="TaoMucSo4D()" type="submit" style="width: 90px; height: 30px; margin-right: 0; border-radius: 4px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 400px;">
+                    <textarea name="ctl00$MainContent$txtInput" rows="3" cols="20" id="MainContent_txtInput" style="font-size: Larger; height: 500px; width: 500px;"></textarea>
+                </td>
+                <td>
+                    <textarea name="ctl00$MainContent$txtOutput" rows="3" cols="20" id="MainContent_txtOutput" style="font-size: Larger; height: 500px; width: 500px;"
+placeholder=" Những số có mặt trong 0 dàn:
+
+Mức: 0 (1 0 0 0) số
+
+000 001 002 003 004 005 006 007 008 009 010 011 012 013
+014 015 016 017 018 019 020 021 022 023 024 025 026 027
+028 029 030 031 032 033 034 035 036 037 038 039 040 041
+042 043 044 045 046 047 048 049 050 051 052 053 054 055
+056 057 058 059 060 061 062 063 064 065 066 067 068 069
+070 071 072 073 074 075 076 077 078 079 080 081 082 083
+084 085 086 087 088 089 090 091 092 093 094 095 096 097
+098 099 100 101 102 103 104 105 106 107 108 109 110 111
+112 113 114 115 116 117 118 119 120 121 122 123 124 125
+126 127 128 129 130 131 132 133 134 135 136 137 138 139
+140 141 142 143 144 145 146 147 148 149 150 151 152 153
+154 155 156 157 158 159 160 161 162 163 164 165 166 167
+168 169 170 171 172 173 174 175 176 177 178 179 180 181
+182 183 184 185 186 187 188 189 190 191 192 193 194 195
+196 197 198 199 200 201 202 203 204 205 206 207 208 209
+210 211 212 213 214 215 216 217 218 219 220 221 222 223
+224 225 226 227 228 229 230 231 232 233 234 235 236 237
+238 239 240 241 242 243 244 245 246 247 248 249 250 251
+252 253 254 255 256 257 258 259 260 261 262 263 264 265
+266 267 268 269 270 271 272 273 274 275 276 277 278 279
+280 281 282 283 284 285 286 287 288 289 290 291 292 293
+294 295 296 297 298 299 300 301 302 303 304 305 306 307
+308 309 310 311 312 313 314 315 316 317 318 319 320 321
+322 323 324 325 326 327 328 329 330 331 332 333 334 335
+336 337 338 339 340 341 342 343 344 345 346 347 348 349
+350 351 352 353 354 355 356 357 358 359 360 361 362 363
+364 365 366 367 368 369 370 371 372 373 374 375 376 377
+378 379 380 381 382 383 384 385 386 387 388 389 390 391
+392 393 394 395 396 397 398 399 400 401 402 403 404 405
+406 407 408 409 410 411 412 413 414 415 416 417 418 419
+420 421 422 423 424 425 426 427 428 429 430 431 432 433
+434 435 436 437 438 439 440 441 442 443 444 445 446 447
+448 449 450 451 452 453 454 455 456 457 458 459 460 461
+462 463 464 465 466 467 468 469 470 471 472 473 474 475
+476 477 478 479 480 481 482 483 484 485 486 487 488 489
+490 491 492 493 494 495 496 497 498 499 500 501 502 503
+504 505 506 507 508 509 510 511 512 513 514 515 516 517
+518 519 520 521 522 523 524 525 526 527 528 529 530 531
+532 533 534 535 536 537 538 539 540 541 542 543 544 545
+546 547 548 549 550 551 552 553 554 555 556 557 558 559
+560 561 562 563 564 565 566 567 568 569 570 571 572 573
+574 575 576 577 578 579 580 581 582 583 584 585 586 587
+588 589 590 591 592 593 594 595 596 597 598 599 600 601
+602 603 604 605 606 607 608 609 610 611 612 613 614 615
+616 617 618 619 620 621 622 623 624 625 626 627 628 629
+630 631 632 633 634 635 636 637 638 639 640 641 642 643
+644 645 646 647 648 649 650 651 652 653 654 655 656 657
+658 659 660 661 662 663 664 665 666 667 668 669 670 671
+672 673 674 675 676 677 678 679 680 681 682 683 684 685
+686 687 688 689 690 691 692 693 694 695 696 697 698 699
+700 701 702 703 704 705 706 707 708 709 710 711 712 713
+714 715 716 717 718 719 720 721 722 723 724 725 726 727
+728 729 730 731 732 733 734 735 736 737 738 739 740 741 
+742 743 744 745 746 747 748 749 750 751 752 753 754 755 
+756 757 758 759 760 761 762 763 764 765 766 767 768 769 
+770 771 772 773 774 775 776 777 778 779 780 781 782 783 
+784 785 786 787 788 789 790 791 792 793 794 795 796 797 
+798 799 800 801 802 803 804 805 806 807 808 809 810 811 
+812 813 814 815 816 817 818 819 820 821 822 823 824 825 
+826 827 828 829 830 831 832 833 834 835 836 837 838 839 
+840 841 842 843 844 845 846 847 848 849 850 851 852 853 
+854 855 856 857 858 859 860 861 862 863 864 865 866 867 
+868 869 870 871 872 873 874 875 876 877 878 879 880 881 
+882 883 884 885 886 887 888 889 890 891 892 893 894 895 
+896 897 898 899 900 901 902 903 904 905 906 907 908 909 
+910 911 912 913 914 915 916 917 918 919 920 921 922 923 
+924 925 926 927 928 929 930 931 932 933 934 935 936 937 
+938 939 940 941 942 943 944 945 946 947 948 949 950 951 
+952 953 954 955 956 957 958 959 960 961 962 963 964 965 
+966 967 968 969 970 971 972 973 974 975 976 977 978 979 
+980 981 982 983 984 985 986 987 988 989 990 991 992 993 
+994 995 996 997 998 999">
+</textarea>
+
+                </td>
+            </tr>
+        </tbody></center>
+  
+<table id="TabMain" style="width: 1000px;">
+    <tbody>
+        <tr>
+            <td style="width: 100%">
+
+                <center>
+<div style="text-align:center"></br>
+
+    <table id="kdh_Table12" style="width: 1000px; background-color: #74c1d3; border-radius: 5px;" align="center">
+
+ 
+	 <h3><b>GHÉP CÀNG 3D, 4D</b></h3>
+	 
+
+        <tbody>
+            <tr>
+                <td style="width: 1000px; text-align: center;" colspan="2">
+                    <input type="submit" onclick="kdc_Clear_gc()" name="ctl00$kdh$btnClear3" value="Xóa" id="kdh_btnClear3" style="width: 60px; height: 30px; margin-right: 5px; border-radius: 4px;"/>
+                    <input name="ctl00$kdh$btnChamGhepTrong" value="Ghép Càng" id="Submit5" type="submit" onclick="GhepCang()" style="width: 100px; height: 30px; margin-right: 5px; border-radius: 4px;"/>
+					<input type="submit" onclick="k_Copy_3()" name="gc$txtOutput" value="Copy" id="k_btnCopy" style="width: 50px; height: 30px; margin-right: 0; border-radius: 4px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 600px; text-align: center;" valign="top">
+                    Nhập càng 3D, 4D (ví dụ : 123/1,2,3/1 2 3):<br />
+                    <textarea name="ctl00$gc$txtCang" rows="2" cols="20" id="gc_txtCang"
+                              style="font-size: Larger; height: 40px; width: 520px;" placeholder="  Nhập càng 3D, 4D (ví dụ: 123/1,2,3/1 2 3) tại đây..."></textarea><br /><br />
+                    Nhập dàn số 2D/3D/4D:<br />
+                    <textarea name="ctl00$gc$txtDan" rows="2" cols="20" id="gc_txtDan"
+                              style="font-size: Larger; height: 130px; width: 520px;"placeholder="  Nhập dàn số 2D/3D/4D (ví dụ: 12,13,14/112,113,114/1234,2345,3456) tại đây..."></textarea><br />
+                </td>
+                <td style="width: 400px;">
+                    Tổng số: <label id="lbl_total" style="font-size: Larger;"></label>
+                    <textarea name="ctl00$gc$txtOutput" rows="2" cols="20" id="gc_txtOutput"
+                              style="font-size: Larger; height: 213px; width: 520px;"></textarea>
+                </td>
+            </tr>
+        </tbody>
+    </table></br>
+
+    <table id="kdh_Table1" style="width: 1000px; background-color: #74c1d3; border-radius: 5px;" align="center">
+
+
+
+	 <h3><b>GHÉP DÀN 3D, 4D - PHƯƠNG PHÁP BCxCDxDE</b></h3>
+        <tbody>
+            <tr>
+                <td style="width: 1000px; text-align: center;" colspan="2">
+                    <input type="submit" onclick="kdc_Clear()" name="ctl00$kdh$btnClear3" value="Xóa" id="kdh_btnClear3" style="width: 60px; height: 30px; margin-right: 5px; border-radius: 4px;"/>
+                    <input name="ctl00$kdh$btnChamGhepTrong" value="Tạo 3D" id="Submit5" type="submit" onclick="kdc_Tao3D()" style="width: 60px; height: 30px; margin-right: 5px; border-radius: 4px;"/>
+                    <input name="ctl00$kdh$btnChamGhepTrong" value="Tạo 4D" id="Submit5" type="submit" onclick="kdc_Tao4D()" style="width: 60px; height: 30px; margin-right: 5px; border-radius: 4px;"/>
+					<input type="submit" onclick="k_Copy()" name="kdh$txtOutput" value="Copy" id="k_btnCopy" style="width: 50px; height: 30px; margin-right: 0; border-radius: 4px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 600px; text-align: center;" valign="top">
+                    Nhập DÀN BC (ví dụ gđb: aBCde) Mảng 4D<br />
+                    <textarea name="ctl00$kdh$txtBC" rows="2" cols="20" id="kdh_txtBC"
+                              style="font-size: Larger; height: 150px; width: 520px;" placeholder="  Nhập DÀN BC (ví dụ gđb: aBCde) Mảng 4D tại đây..."></textarea><br /><br />
+                    Nhập DÀN CD (ví dụ gđb: abCDe) Mảng 3D<br />
+                    <textarea name="ctl00$kdh$txtCD" rows="2" cols="20" id="kdh_txtCD"
+                              style="font-size: Larger; height: 150px; width: 520px;" placeholder="  Nhập DÀN CD (ví dụ gđb: abCDe) Mảng 3D tại đây..."></textarea><br /><br />
+                    Nhập DÀN DE (ví dụ gđb: abcDE - dàn đặc biệt) Mảng 2D<br />
+                    <textarea name="ctl00$kdh$txtDE" rows="2" cols="20" id="kdh_txtDE"
+                              style="font-size: Larger; height: 150px; width: 520px;" placeholder="  Nhập DÀN DE (ví dụ gđb: abcDE - dàn đặc biệt) Mảng 2D tại đây..."></textarea><br />
+                </td>
+                <td style="width: 400px;">
+                    Tổng số: <label id="kdh_lbl_total" style="font-size: Larger;"></label>
+                    <textarea name="ctl00$kdh$txtOutput" rows="2" cols="20" id="kdh_txtOutput"
+                              style="font-size: Larger; height: 534px; width: 520px;"></textarea>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div><!-- End_Module_427 --></div>
+
+    <center>
+    <table id="kdc_Table1" style="width: 1000px; background-color: #74c1d3; border-radius: 5px;" align="center">
+    </br>
+	 <h3><b>TÁCH DÀN 3D, 4D</b></h3>
+
+        <tbody>
+            <tr>
+                <td style="width: 1000px; text-align: center;" colspan="2">
+                    <input type="submit" onclick="kdc_Clear_34()" name="ctl00$kdc$btnClear3" value="Xóa" id="kdc_btnClear3" style="width: 60px; height: 30px; margin-right: 5px; border-radius: 4px;"/>
+                    <input name="ctl00$kdc$btnChamGhepTrong" value="Tách Dàn" id="Submit5" type="submit" onclick="kdc_Tach3D()" style="width: 100px; height: 30px; margin-right: 5px; border-radius: 4px;"/>
+					<input type="submit" onclick="k_Copy_1()" name="kdh$txtDEOutput" value="Copy 2D" id="k_btnCopy" style="width: 80px; height: 30px; margin-right: 0; border-radius: 4px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 400px;">
+                    Nhập dàn 3D, 4D: <label id="kdc_lbl_total" style="font-size: 16px;"></label>
+					<textarea name="ctl00$kdc$txtInput" rows="2" cols="20" id="kdc_txtInput" style="font: Arial; font-size: 16px; height: 534px; width: 520px;" placeholder="  Nhập dàn 3D, 4D cần tách tại đây..."></textarea>		  
+                </td>			
+                <td style="width: 600px; text-align: center;" valign="top">
+                    Kết quả: DÀN BC (ví dụ gđb: aBCde) Mảng 4D<br />
+                    <textarea name="ctl00$kdc$txtBC" rows="2" cols="20" id="kdc_txtBC"
+                              style="font-size: Larger; height: 150px; width: 520px;"></textarea><br /><br />				
+                    Kết quả: DÀN CD (ví dụ gđb: abCDe) Mảng 3D<br />
+                    <textarea name="ctl00$kdc$txtCD" rows="2" cols="20" id="kdc_txtCD"
+                              style="font-size: Larger; height: 150px; width: 520px;"></textarea><br /><br />
+                    Kết quả: DÀN DE (ví dụ gđb: abcDE - dàn đặc biệt) Mảng 2D<br />
+                    <textarea name="ctl00$kdc$txtDE" rows="2" cols="20" id="kdc_txtDE"
+                              style="font-size: Larger; height: 150px; width: 520px;"></textarea><br />
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+	</center>
+	
+	<div class="clear"></div>
+</div>
+</div></div>
+                </div>
+            </div>
+        </div>
+   
+
+
+    <script>
+        // Function to open a specific tab and hide others
+        function openTab(evt, tabName) {
+            var i, tabContent, tabLinks;
+            
+            // Hide all tab content
+            tabContent = document.getElementsByClassName("tab-pane");
+            for (i = 0; i < tabContent.length; i++) {
+                tabContent[i].classList.remove("active");
+            }
+            
+            // Remove active class from all links
+            tabLinks = document.getElementsByClassName("tab-link");
+            for (i = 0; i < tabLinks.length; i++) {
+                tabLinks[i].classList.remove("active");
+            }
+            
+            // Show the clicked tab content and add active class to the link
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // Get all tab links and add event listeners
+        var tabLinks = document.querySelectorAll('.tab-link');
+        tabLinks.forEach(function(link) {
+            link.addEventListener('click', function(event) {
+                if (event.target.hasAttribute('data-tab')) {
+                    event.preventDefault();
+                    openTab(event, event.target.getAttribute('data-tab'));
+                }
+            });
+        });
+
+        // Set default tab to open
+        document.querySelector('.tab-link').click();
+    </script>
+</body>
+</html>

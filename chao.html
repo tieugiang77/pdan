@@ -1,0 +1,255 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảng Tính Chão KangDH</title>
+<style>
+ /* Tab container styling */
+.tabs {
+    width: 80%;
+    margin: 0 auto;
+}
+
+/* Styling for the tab links */
+.tab-links {
+    list-style: none;
+    padding: 0px 15px 15px 15px;
+    display: flex;
+    margin-bottom: 0px;
+    justify-content: center; /* Canh giữa các tab */
+}
+
+/* Styling for each tab */
+.tab-links li {
+    margin-right: 10px;
+}
+
+/* Styling for the tab links */
+.tab-links a {
+    padding: 10px 20px;
+    display: block;
+    text-decoration: none;
+     border: 1px solid #ccc;
+    border-radius: 5px;
+    color: #333;
+}
+
+/* Hover effect for tab links */
+.tab-links a:hover {
+    background-color: #ddd;
+}
+
+/* Styling for the active tab */
+.tab-links .active {
+    color: white;
+}
+
+/* Styling for tab content */
+.tab-content {
+    display: none;
+}
+
+/* Styling for each tab content */
+.tab-pane {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Display active tab content */
+.tab-pane.active {
+    display: block;
+}
+   
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .table-container {
+            flex: 2;
+            margin-right: 20px;
+         }
+
+        .form-container {
+            flex: 1;
+            border: 1px solid #000;
+            padding: 20px;
+            margin-top: 70px;
+            border-radius: 5px;
+            background-color: #f4f4f4;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #cccccc;
+        }
+
+        .highlight-row {
+            background-color: #ffff99;
+        }
+
+        .button {
+            margin-top: 10px;
+            display: block;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+<div class="table-container">
+    <div class="tabs">
+        <!-- Tab links -->
+        <ul class="tab-links">
+            <li><a href="index.html" class="tab-link" data-tab="tab1"; style="background-color:#74c1d3;"><b>HOME</b></a></li>
+            <li><a href="index.html" class="tab-link" data-tab="tab2"; style="background-color:yellow;"><b>TẠO 2D</b></a></li>
+            <li><a href="3d.html" class="tab-link" data-tab="tab3"; style="background-color:#74c1d3;"><b>TẠO 3D-4D</b></a></li>            
+            <li><a href="radom.html" class="tab-link" data-tab="tab4"; style="background-color:#74c1d3;"><b>9X0X RADOM</b></a></li>            
+			<li><a href="chao.html" class="tab-link" data-tab="tab5"; style="background-color:#74c1d3;"><b>XTÍNH CHÃO</b></a></li>
+        </ul>
+        
+    </div>
+    <table id="resultTable">
+        <thead>
+            <tr>
+                <th>Ngày</th>
+                <th>Dàn Đánh</th>
+                <th>Giá</th>
+                <th>Tiền Vào</th>
+                <th>Tổng Tiền</th>
+                <th>Tiền Thắng</th>
+                <th>Lãi Ngày</th>
+                <th>Tổng Lãi</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<div class="form-container">
+    <h3>Bảng Tính Chão KangDH v1.24.12.24</h3>
+
+    <label for="thu">Thu:</label>
+    <input type="number" id="thu" value="100">
+
+    <label for="tra">Trả:</label>
+    <input type="number" id="tra" value="98.5">
+
+    <label for="danDanh">Tổng Số Đánh:</label>
+    <input type="number" id="danDanh" value="79">
+
+    <label for="tienvao">Tiền Vào Ngày 1:</label>
+    <input type="number" id="tienvao" value="">
+
+    <label for="khungChao">Khung Chão:</label>
+    <input type="number" id="khungChao" value="30">
+
+    <label for="von">Vốn Ban Đầu:</label>
+    <input type="number" id="von" value="">
+
+    <button class="button" onclick="generateTable()">Tạo Bảng Chão</button>
+    <button class="button" onclick="calculateInvestment()">Tính Tiền Vào</button>
+</div>
+
+<script>
+function generateTable() {
+    const thu = parseFloat(document.getElementById('thu').value) || 100;
+    const tra = parseFloat(document.getElementById('tra').value) || 98.5;
+    const danDanh = parseFloat(document.getElementById('danDanh').value) || 79;
+    const khungChao = parseInt(document.getElementById('khungChao').value) || 30;
+    let tienVao = parseFloat(document.getElementById('tienvao').value) || 0;
+
+    const tbody = document.getElementById('resultTable').querySelector('tbody');
+    tbody.innerHTML = '';
+
+    let totalLai = 0;
+    let tienThangNgayTruoc = 0;
+    let tongTienNgay1 = 0;
+
+    for (let i = 1; i <= khungChao; i++) {
+        const row = tbody.insertRow();
+        if (i % 3 === 0) row.classList.add('highlight-row');
+
+        let tongTien = tienVao * danDanh;
+        let tienThang = Math.round(tienVao * tra / 1000) * 1000; // Làm tròn đến phần nghìn
+
+        if (i === 1) {
+            tongTienNgay1 = tongTien; // Lưu tổng tiền ngày 1
+        } else {
+            tienVao = Math.round((tienThangNgayTruoc / danDanh) / 1000) * 1000; // Tính tiền vào từ ngày thứ 2
+            tongTien = tienVao * danDanh;
+            tienThang = Math.round((tienVao * tra) / 1000) * 1000; // Làm tròn đến phần nghìn
+        }
+
+        const laiNgay = tienThang - tongTien;
+        const tongLai = i === 1 ? laiNgay : tienThang - tongTienNgay1;
+		//let von = tienVao * danDanh;
+
+        row.insertCell(0).textContent = i; // ngày
+        row.insertCell(1).textContent = danDanh; // dàn đánh
+        row.insertCell(2).textContent = tra; // giá
+        row.insertCell(3).textContent = tienVao.toLocaleString(); // tiền vào
+        row.insertCell(4).textContent = tongTien.toLocaleString(); // tổng tiền
+        row.insertCell(5).textContent = tienThang.toLocaleString(); // tiền thắng
+        row.insertCell(6).textContent = laiNgay.toLocaleString(); // lãi ngày
+        row.insertCell(7).textContent = tongLai.toLocaleString(); // tổng lãi
+
+        tienThangNgayTruoc = tienThang; // Cập nhật tiền thắng ngày trước đó
+    }
+}
+
+function calculateInvestment() {
+    const von = parseFloat(document.getElementById('von').value) || 0;
+    const danDanh = parseFloat(document.getElementById('danDanh').value) || 79;
+
+    const tienVao = Math.round((von / danDanh) / 1000) * 1000; // Tính tiền vào làm tròn đến phần nghìn
+    document.getElementById('tienvao').value = tienVao;
+    //alert(`Tiền Vào 1 Số: ${tienVao.toLocaleString()}`);
+}
+</script>
+
+</body>
+</html>

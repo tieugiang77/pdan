@@ -1,0 +1,300 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Tạo dàn 9x - 0x ngẫu nhiên</title>
+<style>
+/* Tab container styling */
+.tabs {
+    width: 80%;
+    margin: 0 auto;
+}
+
+/* Styling for the tab links */
+.tab-links {
+    list-style: none;
+    padding: 15px;
+    display: flex;
+    margin-bottom: 0px;
+    justify-content: center; /* Canh giữa các tab */
+}
+
+/* Styling for each tab */
+.tab-links li {
+    margin-right: 10px;
+}
+
+/* Styling for the tab links */
+.tab-links a {
+    padding: 10px 20px;
+    display: block;
+    text-decoration: none;
+     border: 1px solid #ccc;
+    border-radius: 5px;
+    color: #333;
+}
+
+/* Hover effect for tab links */
+.tab-links a:hover {
+    background-color: #ddd;
+}
+
+/* Styling for the active tab */
+.tab-links .active {
+    color: white;
+}
+
+/* Styling for tab content */
+.tab-content {
+    display: none;
+}
+
+/* Styling for each tab content */
+.tab-pane {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Display active tab content */
+.tab-pane.active {
+    display: block;
+}
+</style>
+</head>
+<body>
+    <div class="tabs">
+        <!-- Tab links -->
+    <ul class="tab-links">
+            <li><a href="index.html" class="tab-link" data-tab="tab1"; style="background-color:#74c1d3;"><b>HOME</b></a></li>
+             <li><a href="index.html" class="tab-link" data-tab="tab2"; style="background-color:yellow;"><b>TẠO DÀN 2D</b></a></li>
+            <li><a href="3d.html" class="tab-link" data-tab="tab3"; style="background-color:#74c1d3;"><b>TẠO DÀN 3D-4D</b></a></li>            
+            <li><a href="radom.html" class="tab-link" data-tab="tab4"; style="background-color:#74c1d3;"><b>DÀN 9X0X NGẪU NHIÊN</b></a></li>            
+			<li><a href="chao.html" class="tab-link" data-tab="tab5"; style="background-color:#74c1d3;"><b>BẢNG TÍNH CHÃO</b></a></li>
+        </ul>
+        
+    </div> 
+
+	<center>
+		<label for="usr"><b><h4>NHẬP SỐ LƯỢNG DÀN 9X-0X CẦN TẠO: </h4></b></label>
+		<input type="text" class="form-control" id="soluongdan" value="1" style="width: 100px; text-align: center; max-height: 30px; margin-bottom: 5px;">
+		
+		<button class="btn btn-primary" onclick="taonhieudan();">Tạo dàn</button>
+		<button class="btn btn-primary" onclick="myFunction();">Copy</button>	
+	</center>
+		
+
+
+	<div class="container">
+	    <div class="row">
+	        <div class="col-md-12 col-lg-12 col-xs-12">
+	            <textarea style="min-height: 500px; width: 100%; float: left;" id="ketqua"></textarea>
+	            
+	            
+	        </div>
+	    </div>
+		
+
+	</div>
+
+
+
+
+	
+	<script type="text/javascript">
+		function taonhieudan(n) {
+			var n = document.getElementById('soluongdan').value;
+			var txt = ""
+			for (var i = 0; i < n; i++) {
+
+				var a = taodan();
+				txt +=  a + '\n' + '=================================' + '\n' ;
+
+
+			}
+			document.getElementById('ketqua').value = txt;
+		}
+
+		function taodan() {
+			var dan = random();
+			var xuatketqua = "";
+			xuatketqua += '9 5 s' + '\n' + dan.arr95 + '\n'  + '8 8 s' + '\n' + dan.arr88 + '\n'  + '7 8 s' + '\n' + dan.arr78 + '\n' + '6 8 s' + '\n' + dan.arr68 + '\n'  + '5 8 s' + '\n' + dan.arr58 + '\n' + '4 8 s' + '\n' + dan.arr48 + '\n'  + '3 8 s' + '\n' + dan.arr38 + '\n'  + '2 8 s' + '\n' + dan.arr28 + '\n'  + '1 8 s' + '\n' + dan.arr18 + '\n'  + '0 8 s' + '\n' + dan.arr8 + '\n';
+			// document.getElementById('ketqua').value = xuatketqua;
+			return xuatketqua;
+		}
+	
+
+
+	
+//===================================================================		
+
+		function myFunction() {
+			  var copyText = document.getElementById("ketqua");
+			  copyText.select();
+			  document.execCommand("copy");
+
+
+		}
+		function random() {
+			var arr1 = [1,2,3,4,6,7,8,9,10,12,13,14,15,17,18,19,20,21,23,24,25,26,28,29,30,31,32,34,35,36,37,39,40,41,42,43,45,46,47,48,51,52,53,54,56,57,58,59,60,62,63,64,65,67,68,69,70,71,73,74,75,76,78,79,80,81,82,84,85,86,87,89,90,91,92,93,95,96,97,98];
+			var arr2 = [0,5,11,16,22,27,33,38,44,49,50,55,61,66,72,77,83,88,94,99]
+			
+			arr1.sort(function(a, b){return 0.5 - Math.random()});
+			arr2.sort(function(a, b){return 0.5 - Math.random()});
+			//Tao dan 95s
+			arr1.splice(0, 5);
+			arr95 = arr1.concat(arr2);
+			//Tao dan 88s
+			arr1.splice(0, 7);
+			arr88 = arr1.concat(arr2);
+			//Tao dan 78s
+			arr1.splice(0, 10);
+			arr78 = arr1.concat(arr2);
+			//Tao dan 68s
+			arr1.splice(0, 6);
+			arr2.splice(0, 4);
+			arr68 = arr1.concat(arr2);
+			//Tao dan 58s
+			arr1.splice(0, 6);
+			arr2.splice(0, 4);
+			arr58 = arr1.concat(arr2);
+			//Tao dan 48s
+			arr1.splice(0, 6);
+			arr2.splice(0, 4);
+			arr48 = arr1.concat(arr2);
+			//Tao dan 38s
+			arr1.splice(0, 6);
+			arr2.splice(0, 4);
+			arr38 = arr1.concat(arr2);
+			//Tao dan 28s
+			arr1.splice(0, 6);
+			arr2.splice(0, 4);
+			arr28 = arr1.concat(arr2);
+			//Tao dan 18s
+			arr1.splice(0, 10);
+			arr18 = arr1.concat(arr2);
+			//Tao dan 8s
+			arr1.splice(0, 10);
+			arr8 = arr1.concat(arr2);
+
+			//Sap xep
+			arr95.sort(function(a, b){return a - b});
+			arr88.sort(function(a, b){return a - b});
+			arr78.sort(function(a, b){return a - b});
+			arr68.sort(function(a, b){return a - b});
+			arr58.sort(function(a, b){return a - b});
+			arr48.sort(function(a, b){return a - b});
+			arr38.sort(function(a, b){return a - b});
+			arr28.sort(function(a, b){return a - b});
+			arr18.sort(function(a, b){return a - b});
+			arr8.sort(function(a, b){return a - b});
+
+
+			//Tao cac so 00,01,02,...
+			for (var i = 0; i < arr95.length; i++) {
+				if (arr95[i] < 10) {
+					arr95[i] = "0" + arr95[i];
+				}
+			}
+			for (var i = 0; i < arr88.length; i++) {
+				if (arr88[i] < 10) {
+					arr88[i] = "0" + arr88[i];
+				}
+			}
+			for (var i = 0; i < arr78.length; i++) {
+				if (arr78[i] < 10) {
+					arr78[i] = "0" + arr78[i];
+				}
+			}
+			for (var i = 0; i < arr68.length; i++) {
+				if (arr68[i] < 10) {
+					arr68[i] = "0" + arr68[i];
+				}
+			}
+			for (var i = 0; i < arr58.length; i++) {
+				if (arr58[i] < 10) {
+					arr58[i] = "0" + arr58[i];
+				}
+			}
+			for (var i = 0; i < arr48.length; i++) {
+				if (arr48[i] < 10) {
+					arr48[i] = "0" + arr48[i];
+				}
+			}
+			for (var i = 0; i < arr38.length; i++) {
+				if (arr38[i] < 10) {
+					arr38[i] = "0" + arr38[i];
+				}
+			}
+			for (var i = 0; i < arr28.length; i++) {
+				if (arr28[i] < 10) {
+					arr28[i] = "0" + arr28[i];
+				}
+			}
+			for (var i = 0; i < arr18.length; i++) {
+				if (arr18[i] < 10) {
+					arr18[i] = "0" + arr18[i];
+				}
+			}
+			for (var i = 0; i < arr8.length; i++) {
+				if (arr8[i] < 10) {
+					arr8[i] = "0" + arr8[i];
+				}
+			}
+			
+		
+			var obj1 = {
+				arr95, arr88, arr78, arr68, arr58, arr48, arr38, arr28, arr18, arr8
+			};
+			
+			return obj1;
+		}
+
+		
+	</script>
+    <script>
+        // Function to open a specific tab and hide others
+        function openTab(evt, tabName) {
+            var i, tabContent, tabLinks;
+            
+            // Hide all tab content
+            tabContent = document.getElementsByClassName("tab-pane");
+            for (i = 0; i < tabContent.length; i++) {
+                tabContent[i].classList.remove("active");
+            }
+            
+            // Remove active class from all links
+            tabLinks = document.getElementsByClassName("tab-link");
+            for (i = 0; i < tabLinks.length; i++) {
+                tabLinks[i].classList.remove("active");
+            }
+            
+            // Show the clicked tab content and add active class to the link
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // Get all tab links and add event listeners
+        var tabLinks = document.querySelectorAll('.tab-link');
+        tabLinks.forEach(function(link) {
+            link.addEventListener('click', function(event) {
+                if (event.target.hasAttribute('data-tab')) {
+                    event.preventDefault();
+                    openTab(event, event.target.getAttribute('data-tab'));
+                }
+            });
+        });
+
+        // Set default tab to open
+        document.querySelector('.tab-link').click();
+    </script>
+    
+</body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+</html>
