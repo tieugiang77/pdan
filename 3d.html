@@ -1,4 +1,4 @@
-﻿
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en-US"><head id="Head">
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"><title>
@@ -10,12 +10,11 @@
 <meta id="MetaGenerator" name="GENERATOR" content="DotNetNuke ">
 <meta id="MetaRobots" name="ROBOTS" content="INDEX, FOLLOW">
 <link href="/" rel="canonical"><link rel="SHORTCUT ICON" href="/favicon.ico" type="image/x-icon">   
- <style>
-
+<link rel="stylesheet" href="./js/main.css">
 <style>
 /* Tab container styling */
 .tabs {
-    width: 80%;
+    width: 80%
     margin: 0 auto;
 }
 
@@ -25,7 +24,7 @@
     padding: 15px;
     display: flex;
     margin-bottom: 0px;
-    justify-content: center;
+    justify-content: center; /* Canh giữa các tab */
 }
 
 /* Styling for each tab */
@@ -38,26 +37,19 @@
     padding: 10px 20px;
     display: block;
     text-decoration: none;
-    border: 2px solid #d32f2f; /* Red border */
-    border-radius: 8px;
-    color: #b71c1c; /* Dark red text */
-    background-color: #fff3e0; /* Light golden background */
-    font-weight: bold;
-    transition: all 0.3s ease;
+     border: 1px solid #ccc;
+    border-radius: 5px;
+    color: #333;
 }
 
 /* Hover effect for tab links */
 .tab-links a:hover {
-    background-color: #ffd54f; /* Soft yellow hover */
-    color: #c62828;
-    border-color: #c62828;
+    background-color: #ddd;
 }
 
 /* Styling for the active tab */
 .tab-links .active {
-    background-color: #d32f2f; /* Strong red */
-    color: #fff8e1; /* Light yellow text */
-    border-color: #b71c1c;
+    color: white;
 }
 
 /* Styling for tab content */
@@ -67,11 +59,9 @@
 
 /* Styling for each tab content */
 .tab-pane {
-    padding: 10px;
-    border: 2px solid #d32f2f;
-    border-radius: 8px;
-    background-color: #fffde7; /* Very light yellow */
-    color: #4e342e;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 /* Display active tab content */
@@ -79,47 +69,30 @@
     display: block;
 }
 
-/* Reset margin */
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-}
+body {margin:0;}
 
-/* Navbar styling */
 .navbar {
-    overflow: hidden;
-    background-color: #b71c1c; /* Dark red */
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 999;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  overflow: hidden;
+  background-color: #333;
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 
-/* Navbar links */
 .navbar a {
-    float: left;
-    display: block;
-    color: #ffeb3b; /* Bright yellow */
-    text-align: center;
-    padding: 10px 16px;
-    text-decoration: none;
-    font-size: 17px;
-    transition: background 0.3s ease;
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 7px 8px;
+  text-decoration: none;
+  font-size: 17px;
 }
 
-/* Navbar hover effect */
-.navbar a:hover {
-    background-color: #e53935; /* Slightly lighter red */
-    color: #fffde7;
-}
-
-/* Main content */
 .main {
-    padding: 10px;
-    margin-top: 50px; /* Adjust to navbar height */
-    min-height: 800px;
-    background-color: #fff8e1; /* Light yellow background */
+  padding: 16px;
+  margin-top: 30px;
+  height: 800px; /* Used in this example to enable scrolling */
 }
 </style>
 
@@ -608,11 +581,11 @@ function GhepCang() {
     <div class="tabs">
         <!-- Tab links -->
         <ul class="tab-links">
-            <li><a href="index.html" class="tab-link" data-tab="tab1"; style="background-color:#74c1d3;"><b>HOME</b></a></li>
+            <!--li><a href="index.html" class="tab-link" data-tab="tab1"; style="background-color:#74c1d3;"><b>HOME</b></a></li-->
             <li><a href="index.html" class="tab-link" data-tab="tab2"; style="background-color:yellow;"><b>TẠO DÀN 2D</b></a></li>
             <li><a href="3d.html" class="tab-link" data-tab="tab3"; style="background-color:#74c1d3;"><b>TẠO DÀN 3D-4D</b></a></li>            
-            <li><a href="radom.html" class="tab-link" data-tab="tab4"; style="background-color:#74c1d3;"><b>DÀN 9X0X NGẪU NHIÊN</b></a></li>            
-			<li><a href="chao.html" class="tab-link" data-tab="tab5"; style="background-color:#74c1d3;"><b>BẢNG TÍNH CHÃO</b></a></li>
+            <!--li><a href="radom.html" class="tab-link" data-tab="tab4"; style="background-color:#74c1d3;"><b>DÀN 9X0X NGẪU NHIÊN</b></a></li>            
+			<li><a href="chao.html" class="tab-link" data-tab="tab5"; style="background-color:#74c1d3;"><b>BẢNG TÍNH CHÃO</b></a></li-->
         </ul>
         
     </div>
