@@ -1,4 +1,6 @@
-﻿<html xmlns="http://www.w3.org/1999/xhtml"><head>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Tạo dàn xổ số | Ứng dụng mức số</title>
 <meta id="MetaDescription" name="DESCRIPTION" content=" công cụ mức số">
@@ -6,90 +8,104 @@
 <meta id="MetaGenerator" name="GENERATOR" content="DotNetNuke ">
 <meta id="MetaRobots" name="ROBOTS" content="INDEX, FOLLOW">
 <link href="/" rel="canonical"><link rel="SHORTCUT ICON" href="js/favicon.ico" type="js/x-icon.ico">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap">
-<link rel="stylesheet" href="./js/bootstrap.min.css">
+    <link rel="stylesheet" href="./js/bootstrap.min.css">
 	<link rel="stylesheet" href="./js/main.css">
 	<script src="./js/jquery.min.js"></script>
     <script src="./js/popper.min.js"></script>
     <script src="./js/bootstrap.min.js"></script>
 <style>
 /* Tab container styling */
-.tabs { width: 80%; margin: 0 auto;
+.tabs {
+    width: 80%;
+    margin: 0 auto;
 }
 
 /* Styling for the tab links */
-.tab-links { list-style: none; padding: 8px; display: flex; margin-bottom: 0px; justify-content: center;
+.tab-links {
+    list-style: none;
+    padding: 15px;
+    display: flex;
+    margin-bottom: 0px;
+    justify-content: center; /* Canh giữa các tab */
 }
 
 /* Styling for each tab */
-.tab-links li {  margin-right: 10px;
+.tab-links li {
+    margin-right: 10px;
 }
 
 /* Styling for the tab links */
-.tab-links a { padding: 2px 20px; display: block; text-decoration: none; border: 2px solid #d32f2f; /* Red border */
-    border-radius: 2px; color: #b71c1c; /* Dark red text */ background-color: #d3812f; /* Light golden background */
-    font-weight: bold; transition: all 0.3s ease;
+.tab-links a {
+    padding: 10px 20px;
+    display: block;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: #333;
 }
 
 /* Hover effect for tab links */
-.tab-links a:hover { background-color: #ffd54f; /* Soft yellow hover */ color: #c62828;  border-color: #c62828;
+.tab-links a:hover {
+    background-color: #ddd;
 }
 
 /* Styling for the active tab */
-.tab-links .active { background-color: #d32f2f; /* Strong red */ color: #fff8e1; /* Light yellow text */
-    border-color: #b71c1c;
+.tab-links .active {
+    color: white;
 }
 
 /* Styling for tab content */
-.tab-content { display: none;
+.tab-content {
+    display: none;
 }
 
 /* Styling for each tab content */
-.tab-pane {  padding: 10px; border: 2px solid #d32f2f; border-radius: 8px; background-color: #fffde7; /* Very light yellow */
-    color: #4e342e;
+.tab-pane {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 /* Display active tab content */
-.tab-pane.active { display: block;
+.tab-pane.active {
+    display: block;
+}
+		
+body {margin:0;}
+
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 
-/* Reset margin */
-body { margin: 0;font-family: Arial, sans-serif;
-}
-
-/* Navbar styling */
-.navbar {overflow: hidden;background-color: #b71c1c; /* Dark red */ position: fixed;
-    top: 0; width: 100%; z-index: 999; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-/* Navbar links */
 .navbar a {
-    float: left;display: block; color: #ffeb3b; /* Bright yellow */ text-align: center; padding: 10px 16px;
-    text-decoration: none; font-size: 17px; transition: background 0.3s ease;
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 7px 8px;
+  text-decoration: none;
+  font-size: 17px;
 }
 
-/* Navbar hover effect */
-.navbar a:hover { background-color: #e53935; /* Slightly lighter red */ color: #fffde7;
+.main {
+  padding: 2px;
+  margin-top: 2px;
+  height: 800px; /* Used in this example to enable scrolling */
 }
-
-/* Main content */
-.main { padding: 10px; margin-top: 50px; /* Adjust to navbar height */ min-height: 800px;
-    background-color: #fff8e1; /* Light yellow background */
-}
-	 body {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 300;
-  }
 </style>
 </head><body>
     <div class="tabs">
         <!-- Tab links -->
         <ul class="tab-links">
-            <li><a href="index.html" class="tab-link" data-tab="tab1"; style="background-color:#74c1d3;"><b>HOME</b></a></li>
-            <li><a href="index.html" class="tab-link" data-tab="tab2"; style="background-color:yellow;"><b>DÀN 2D</b></a></li>
-            <li><a href="3d.html" class="tab-link" data-tab="tab3"; style="background-color:#74c1d3;"><b>DÀN 3D-4D</b></a></li>            
-            <li><a href="radom.html" class="tab-link" data-tab="tab4"; style="background-color:#74c1d3;"><b>9X0X NGẪU NHIÊN</b></a></li>            
-			<li><a href="chao.html" class="tab-link" data-tab="tab5"; style="background-color:#74c1d3;"><b>TÍNH CHÃO</b></a></li>
+            <!--li><a href="index.html" class="tab-link" data-tab="tab1"; style="background-color:#74c1d3;"><b>HOME</b></a></li-->
+            <li><a href="index.html" class="tab-link" data-tab="tab2"; style="background-color:yellow;"><b>TẠO DÀN 2D</b></a></li>
+            <li><a href="3d.html" class="tab-link" data-tab="tab3"; style="background-color:#74c1d3;"><b>TẠO DÀN 3D-4D</b></a></li>            
+            <!--li><a href="radom.html" class="tab-link" data-tab="tab4"; style="background-color:#74c1d3;"><b>DÀN 9X0X NGẪU NHIÊN</b></a></li>            
+			<li><a href="chao.html" class="tab-link" data-tab="tab5"; style="background-color:#74c1d3;"><b>BẢNG TÍNH CHÃO</b></a></li-->
         </ul>
     </div>
 <div class="main">
@@ -1568,7 +1584,7 @@ Mức: 0 (1 0 0) số
         
 	    <tbody>
 		    <tr>
-		         <div class="container">
+		        <div class="container">
             		<div class="col-md-12 col-lg-12 col-xs-12" > 
             			<div style="width: 90%; margin: 20px auto; display: flex; display: none;">
             				<textarea style="min-height: 200px; width: 100%; float: left;" id="inputudms"></textarea>
@@ -3235,10 +3251,4 @@ bt.on("click",function(e){return $("html,body").animate({scrollTop:0},800),!1;})
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script -->
 </div>  
-
 </html>
-
-
-
-
-
