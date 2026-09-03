@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tỉ Lệ & Dàn Khung</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; }
+        .dashboard-header { background: linear-gradient(135deg, #2c3e50, #3498db); color: white; padding: 20px 0; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .card { box-shadow: 0 4px 8px rgba(0,0,0,0.05); margin-bottom: 25px; border: none; border-radius: 12px; overflow: hidden; }
+        .card-header { background-color: #ffffff; color: #2c3e50; font-weight: 700; font-size: 1.2rem; border-bottom: 2px solid #ecf0f1; padding: 15px 20px; }
+        .table-custom th { background-color: #ecf0f1; color: #2c3e50; text-align: center; font-weight: 600; padding: 12px; }
+        .table-custom td { text-align: center; vertical-align: middle; padding: 10px; border-color: #ecf0f1; }
+        .nav-tabs { border-bottom: 2px solid #dee2e6; margin-bottom: 20px; }
+        .nav-tabs .nav-link { color: #7f8c8d; font-weight: 600; font-size: 1.1rem; border: none; padding: 10px 20px; transition: all 0.3s; }
+        .nav-tabs .nav-link:hover { color: #3498db; }
+        .nav-tabs .nav-link.active { color: #2980b9; background-color: transparent; border-bottom: 3px solid #3498db; }
+        .summary-box { background: white; padding: 15px 20px; border-radius: 10px; text-align: left; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 5px solid #3498db; height: 100%; transition: transform 0.2s; }
+        .summary-box:hover { transform: translateY(-3px); }
+        .summary-box.green { border-left-color: #2ecc71; }
+        .summary-box.orange { border-left-color: #e67e22; }
+        .summary-title { font-size: 0.9rem; color: #95a5a6; margin-bottom: 5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .summary-value { font-size: 1.5rem; font-weight: 700; color: #2c3e50; }
+        .text-profit { color: #27ae60 !important; font-weight: 600; }
+        .text-loss { color: #e74c3c !important; font-weight: 600; }
+        .row-striped:nth-of-type(odd) { background-color: #f9fbfc; }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-header text-center">
+    <h1 style="font-weight: 800; letter-spacing: 1px; margin: 0;">📊 BẢNG THAM KHẢO TỈ LỆ</h1>
+    
+</div>
+
+<div class="container">
+<ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+  
+  <li class="nav-item">
+    <a class="nav-link" href="index.html">HOME</a>
+  </li>
+
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="loto-tab" data-bs-toggle="tab" data-bs-target="#loto" type="button" role="tab">Dàn Loto</button>
+  </li>
+
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="dan-db-tab" data-bs-toggle="tab" data-bs-target="#dan-db" type="button" role="tab">Tỉ Lệ Vào Dàn ĐB</button>
+  </li>
+
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="khung-db-tab" data-bs-toggle="tab" data-bs-target="#khung-db" type="button" role="tab">Đánh Khung Dàn ĐB</button>
+  </li>
+
+</ul>
+
+    <div class="tab-content" id="myTabContent">
+        
+        <div class="tab-pane fade show active" id="loto" role="tabpanel">
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <div class="summary-box">
+                        <div class="summary-title">Số $ chơi / 1 điểm</div>
+                        <div class="summary-value">27,000 <small class="text-muted" style="font-size:0.9rem">VNĐ</small></div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="summary-box green">
+                        <div class="summary-title">Số $ trúng / 1 điểm</div>
+                        <div class="summary-value">99,000 <small class="text-muted" style="font-size:0.9rem">VNĐ</small></div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="summary-box orange">
+                        <div class="summary-title">Điểm chơi 1 cặp BĐ</div>
+                        <div class="summary-value">4 <small class="text-muted" style="font-size:0.9rem">Điểm</small></div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="summary-box">
+                        <div class="summary-title">Số nháy về</div>
+                        <div class="summary-value">1 <small class="text-muted" style="font-size:0.9rem">Nháy</small></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header"><i class="bi bi-table"></i> Bảng Tính Tiền Theo Ngày (Tỉ Lệ 1)</div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-custom mb-0">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left; padding-left: 20px;">Thông số / Ngày</th>
+                                    <th>N1</th>
+                                    <th>N2</th>
+                                    <th>N3</th>
+                                    <th>N4</th>
+                                    <th>N5</th>
+                                    <th>N6</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="row-striped"><td style="text-align: left; padding-left: 20px;"><strong>Tỉ lệ</strong></td><td>1</td><td>3</td><td>8</td><td>20</td><td>45</td><td>100</td></tr>
+                                <tr class="row-striped"><td style="text-align: left; padding-left: 20px;"><strong>Số điểm chơi / cặp</strong></td><td>4</td><td>12</td><td>32</td><td>80</td><td>180</td><td>400</td></tr>
+                                <tr class="row-striped"><td style="text-align: left; padding-left: 20px;"><strong>Số $ chơi</strong></td><td>108,000</td><td>324,000</td><td>864,000</td><td>2,160,000</td><td>4,860,000</td><td>10,800,000</td></tr>
+                                <tr class="row-striped"><td style="text-align: left; padding-left: 20px;"><strong>Tổng $ chơi khi nuôi</strong></td><td>108,000</td><td>432,000</td><td>1,296,000</td><td>3,456,000</td><td>8,316,000</td><td>19,116,000</td></tr>
+                                <tr class="row-striped"><td style="text-align: left; padding-left: 20px;"><strong>Tổng $ Trúng</strong></td><td class="text-profit">198,000</td><td class="text-profit">594,000</td><td class="text-profit">1,584,000</td><td class="text-profit">3,960,000</td><td class="text-profit">8,910,000</td><td class="text-profit">19,800,000</td></tr>
+                                <tr class="row-striped"><td style="text-align: left; padding-left: 20px;"><strong>Lợi nhuận</strong></td><td class="text-profit">90,000</td><td class="text-profit">162,000</td><td class="text-profit">288,000</td><td class="text-profit">504,000</td><td class="text-profit">594,000</td><td class="text-profit">684,000</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="dan-db" role="tabpanel">
+             <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <div class="summary-box">
+                        <div class="summary-title">Tổng số chơi</div>
+                        <div class="summary-value">70 <small class="text-muted" style="font-size:0.9rem">Số</small></div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="summary-box green">
+                        <div class="summary-title">Tỉ lệ ăn</div>
+                        <div class="summary-value">1 : 99</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="summary-box orange">
+                        <div class="summary-title">Vào tiền BĐ / số</div>
+                        <div class="summary-value">10,000 <small class="text-muted" style="font-size:0.9rem">VNĐ</small></div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="summary-box">
+                        <div class="summary-title">Tỉ lệ áp dụng</div>
+                        <div class="summary-value">TL5</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Bảng Tính Tiền Theo Ngày (Dàn ĐB - TL5)</div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-custom mb-0">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left; padding-left: 20px;">Thông số / Ngày</th>
+                                    <th>N1</th>
+                                    <th>N2</th>
+                                    <th>N3</th>
+                                    <th>N4</th>
+                                    <th>N5</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="row-striped"><td style="text-align: left; padding-left: 20px;"><strong>Tỉ lệ</strong></td><td>1</td><td>3.5</td><td>12</td><td>40.5</td><td>136.5</td></tr>
+                                <tr class="row-striped"><td style="text-align: left; padding-left: 20px;"><strong>Mức chơi / số</strong></td><td>10,000</td><td>35,000</td><td>120,000</td><td>405,000</td><td>1,365,000</td></tr>
+                                <tr class="row-striped"><td style="text-align: left; padding-left: 20px;"><strong>Vốn chơi ngày</strong></td><td>700,000</td><td>2,450,000</td><td>8,400,000</td><td>28,350,000</td><td>95,550,000</td></tr>
+                                <tr class="row-striped"><td style="text-align: left; padding-left: 20px;"><strong>Tổng vốn chơi</strong></td><td>700,000</td><td>3,150,000</td><td>11,550,000</td><td>39,900,000</td><td>135,450,000</td></tr>
+                                <tr class="row-striped"><td style="text-align: left; padding-left: 20px;"><strong>Trúng</strong></td><td class="text-profit">990,000</td><td class="text-profit">3,465,000</td><td class="text-profit">11,880,000</td><td class="text-profit">40,095,000</td><td class="text-profit">135,135,000</td></tr>
+                                <tr class="row-striped"><td style="text-align: left; padding-left: 20px;"><strong>Lợi Nhuận</strong></td><td class="text-profit">290,000</td><td class="text-profit">315,000</td><td class="text-profit">330,000</td><td class="text-profit">195,000</td><td class="text-loss">-315,000</td></tr>
+                                <tr class="row-striped"><td style="text-align: left; padding-left: 20px;"><strong>% Lợi nhuận</strong></td><td>41.4%</td><td>10.0%</td><td>2.86%</td><td>0.49%</td><td class="text-loss">-0.23%</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="khung-db" role="tabpanel">
+            <div class="row g-3 mb-4">
+                <div class="col-md-2">
+                    <div class="summary-box">
+                        <div class="summary-title">Số chơi</div>
+                        <div class="summary-value">64</div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="summary-box green">
+                        <div class="summary-title">Tỉ lệ ăn</div>
+                        <div class="summary-value">99k</div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="summary-box orange">
+                        <div class="summary-title">Tổng khung</div>
+                        <div class="summary-value">7</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="summary-box">
+                        <div class="summary-title">Vốn chơi</div>
+                        <div class="summary-value">44,800,000</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="summary-box green">
+                        <div class="summary-title">Lợi nhuận (Dự kiến)</div>
+                        <div class="summary-value text-profit">64,496,000</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Bảng Theo Dõi Đánh Khung Dàn Đặc Biệt</div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-custom mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Ngày Khung</th>
+                                    <th>Vào tiền</th>
+                                    <th>Tiền đánh</th>
+                                    <th>Tiền trúng</th>
+                                    <th>Tiền lãi</th>
+                                    <th>Cộng % tiền thua</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="row-striped"><td><strong>1</strong></td><td>100,000</td><td>6,400,000</td><td class="text-profit">9,900,000</td><td class="text-profit">3,500,000</td><td>20%</td></tr>
+                                <tr class="row-striped"><td><strong>2</strong></td><td>154,000</td><td>9,856,000</td><td class="text-profit">15,246,000</td><td class="text-profit">8,846,000</td><td>23%</td></tr>
+                                <tr class="row-striped"><td><strong>3</strong></td><td>238,000</td><td>15,232,000</td><td class="text-profit">23,562,000</td><td class="text-profit">17,162,000</td><td>26%</td></tr>
+                                <tr class="row-striped"><td><strong>4</strong></td><td>368,000</td><td>23,552,000</td><td class="text-profit">36,432,000</td><td class="text-profit">30,032,000</td><td>29%</td></tr>
+                                <tr class="row-striped"><td><strong>5</strong></td><td>569,000</td><td>36,416,000</td><td class="text-profit">56,331,000</td><td class="text-profit">49,931,000</td><td>33%</td></tr>
+                                <tr class="row-striped"><td><strong>6</strong></td><td>880,000</td><td>56,320,000</td><td class="text-profit">87,120,000</td><td class="text-profit">80,720,000</td><td>38%</td></tr>
+                                <tr class="row-striped"><td><strong>7</strong></td><td>1,361,000</td><td>87,104,000</td><td class="text-profit">134,739,000</td><td class="text-profit">128,339,000</td><td>43%</td></tr>
+                                <tr class="row-striped"><td><strong>8</strong></td><td>2,105,000</td><td>134,720,000</td><td class="text-profit">208,395,000</td><td class="text-profit">201,995,000</td><td>48%</td></tr>
+                                <tr class="row-striped"><td><strong>9</strong></td><td>3,256,000</td><td>208,384,000</td><td class="text-profit">322,344,000</td><td class="text-profit">315,944,000</td><td>55%</td></tr>
+                                <tr class="row-striped"><td><strong>10</strong></td><td>5,036,000</td><td>322,304,000</td><td class="text-profit">498,564,000</td><td class="text-profit">492,164,000</td><td>62%</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

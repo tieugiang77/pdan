@@ -1,0 +1,2131 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Tạo dàn mức số</title>
+<meta id="MetaDescription" name="DESCRIPTION" content=" công cụ mức số">
+<meta id="MetaKeywords" name="KEYWORDS" content=",DotNetNuke,DNN">
+<meta id="MetaGenerator" name="GENERATOR" content="DotNetNuke ">
+<meta id="MetaRobots" name="ROBOTS" content="INDEX, FOLLOW">
+<link href="/" rel="canonical"><link rel="SHORTCUT ICON" href="js/favicon.ico" type="js/x-icon.ico">
+    <link rel="stylesheet" href="./js/bootstrap.min.css">
+	<link rel="stylesheet" href="./js/main.css">
+	<script src="./js/jquery.min.js"></script>
+    <script src="./js/popper.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f6; 
+        }
+        .modern-navbar {
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            padding: 15px 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .tab-links {
+            list-style: none;
+            display: flex;
+            gap: 15px; 
+            margin: 0;
+            padding: 0;
+        }
+        .tab-links a {
+            text-decoration: none;
+            color: #555555;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 10px 24px;
+            border-radius: 50px; 
+            transition: all 0.3s ease; 
+            display: inline-block;
+        }
+
+        .tab-links a:hover {
+            background-color: #e0f2fe;
+            color: #0284c7;
+        }
+        .tab-links a.active {
+            background-color: #0ea5e9; 
+            color: #ffffff;
+            box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3); 
+        }
+        .tab-links a.highlight {
+            background-color: #f59e0b; 
+            color: #ffffff;
+            box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
+        }
+        
+        .tab-links a.highlight:hover {
+            background-color: #d97706;
+        }
+
+        .main-content {
+            padding: 40px;
+            text-align: center;
+            height: 1000px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="modern-navbar">
+        <ul class="tab-links">
+            <li><a href="index.html" class="active">HOME</a></li>
+			<li><a href="3d.html" class="highlight">TẠO 3D-4D</a></li>            
+            <li><a href="radom.html" class="active">09xRANDOM</a></li>            
+            <li><a href="chao.html" class="highlight">TÍNH CHÃO</a></li> </ul>
+    </nav>
+
+<div class="main">
+ <style type="text/css" media="all">a:active,{color: #0565B2;text-decoration: none;}
+ #tab{padding:4px 5px 0 5px;border-bottom:5px solid #f9c;font-size:12px}
+ #tab a {color:#494949;font-weight:bold}#tab tr,
+ #tab td{height:25px;padding-top:4px}
+ #tab td{padding-left:5px;padding-right:5px;text-align:center}
+ #tab .active{background:#f9c;}#tab .active a{color:#fff}
+ </style>
+<center>
+<script type="text/javascript">
+        function TaoMucSo1D() {
+            var dauvao = document.getElementById('MainContent_txtInput');
+            var daura = document.getElementById('MainContent_txtOutput'); 
+            var eachLine = dauvao.value.split(',');
+            var listOfObjects = [];
+            var list_lo = [];
+            for (i = 0; i <= 9; i++) {
+                var lo, count;
+                if (i <= 9) lo = i;
+                else lo = i;
+
+                count = countString(dauvao.value, lo);
+                listOfObjects.push({ lo: lo, count: count });
+
+            }
+            listOfObjects.sort(function (a, b) {
+                return a.count - b.count;
+            })
+            var value1, value2, check;
+            value1 = '';
+            value2 = '';
+            for (var cc = 0; cc <= 10000; cc++) {
+                for (var i in listOfObjects) {
+                    if (listOfObjects[i].count == cc) {
+                        check = true;
+                        value2 += listOfObjects[i].lo + ',';
+                        list_lo.push(listOfObjects[i].lo)
+                    }
+                }
+                list_lo.sort();
+                if (check == true) {
+                    value1 += 'Mức: ' + cc + ' (' + list_lo.length + ') số' + '\n' + list_lo.join(',') + '\n';
+                    check = false;
+                    value2 = '';
+                    list_lo.length = 0;
+                }
+            }
+            daura.value = value1;            
+        }
+
+        function countString(str, search) {
+            var count = 0;
+            var index = str.indexOf(search);
+            while (index != -1) {
+                count++;
+                index = str.indexOf(search, index + 1);
+            }
+            return count;
+        }
+
+function TaoMucSo2D() {
+    var dauvao = document.getElementById('MainContent_txtInput').value;
+    var daura = document.getElementById('MainContent_txtOutput');
+    var listOfObjects = [];
+    dauvao = dauvao.replace(/[\s.,;|-]+/g, ',')
+                   .replace(/^,+|,+$/g, ''); 
+
+    let uniquePairs = new Set();
+    let allPairs = [];
+
+    dauvao.split(',').forEach(num => {
+        num = num.trim();
+        if (num.length === 2) {
+
+            allPairs.push(num);
+            uniquePairs.add(num);
+        } else if (num.length > 2) {
+      
+            for (let i = 0; i < num.length - 1; i++) {
+                let pair = num.slice(i, i + 2);
+                allPairs.push(pair);
+                uniquePairs.add(pair);
+            }
+        }
+    });
+
+
+    let dauvaoMap = new Map();
+    allPairs.forEach(num => {
+        num = num.trim();
+        if (num !== '') {
+            dauvaoMap.set(num, (dauvaoMap.get(num) || 0) + 1);
+        }
+    });
+
+
+    for (let i = 0; i <= 99; i++) {
+        let lo = i.toString().padStart(2, '0'); 
+        let count = dauvaoMap.get(lo) || 0;
+        listOfObjects.push({ lo: lo, count: count });
+    }
+
+    listOfObjects.sort((a, b) => b.count - a.count); 
+
+    let value1 = '';
+    let maxLevel = Math.max(...listOfObjects.map(obj => obj.count)); 
+    let listLevels = Array(maxLevel + 1).fill().map(() => []);       
+    listOfObjects.forEach(obj => {
+        listLevels[obj.count].push(obj.lo);
+    });
+
+    listLevels.forEach((nums, level) => {
+        if (nums.length > 0) {
+ 
+            let levelStr = level < 10 
+                ? level.toString()  
+                : level.toString().split('').join(' '); 
+
+            let numCountStr = nums.length === 100 
+                ? '1 0 0'  
+                : nums.length.toString().split('').join(' ');
+
+            value1 += `Mức: ${levelStr} (${numCountStr}) số\n${nums.join(',')}\n`;
+        }
+    });
+
+    daura.value = value1;
+}
+
+
+ function TaoMucSo2D_2() {
+    var dauvao = document.getElementById('MainContent_txtOutput1').value;
+    var daura = document.getElementById('MainContent_txtOutput');
+    var listOfObjects = [];
+
+    dauvao = dauvao.replace(/[\s.,;|-]+/g, ',')
+                   .replace(/^,+|,+$/g, ''); 
+
+    let uniquePairs = new Set();
+    let allPairs = [];
+
+    dauvao.split(',').forEach(num => {
+        num = num.trim();
+        if (num.length === 2) {
+         
+            allPairs.push(num);
+            uniquePairs.add(num);
+        } else if (num.length > 2) {
+            
+            for (let i = 0; i < num.length - 1; i++) {
+                let pair = num.slice(i, i + 2);
+                allPairs.push(pair);
+                uniquePairs.add(pair);
+            }
+        }
+    });
+
+    let dauvaoMap = new Map();
+    allPairs.forEach(num => {
+        num = num.trim();
+        if (num !== '') {
+            dauvaoMap.set(num, (dauvaoMap.get(num) || 0) + 1);
+        }
+    });
+
+    for (let i = 0; i <= 99; i++) {
+        let lo = i.toString().padStart(2, '0'); 
+        let count = dauvaoMap.get(lo) || 0;
+        listOfObjects.push({ lo: lo, count: count });
+    }
+
+    listOfObjects.sort((a, b) => b.count - a.count); 
+
+    let value1 = '';
+    let maxLevel = Math.max(...listOfObjects.map(obj => obj.count));
+    let listLevels = Array(maxLevel + 1).fill().map(() => []);       
+    listOfObjects.forEach(obj => {
+        listLevels[obj.count].push(obj.lo);
+    });
+
+    listLevels.forEach((nums, level) => {
+        if (nums.length > 0) {
+
+            let levelStr = level < 10 
+                ? level.toString()  
+                : level.toString().split('').join(' '); 
+
+            let numCountStr = nums.length === 100 
+                ? '1 0 0'   
+                : nums.length.toString().split('').join(' ');
+
+    
+            value1 += `Mức: ${levelStr} (${numCountStr}) số\n${nums.join(',')}\n`;
+        }
+    });
+
+    daura.value = value1;
+}
+
+ function TaoMucSoM0M10() {
+    var dauvao = document.getElementById('catdanfinal').value;
+    var daura = document.getElementById('MainContent_txtOutput');
+    var listOfObjects = [];
+	
+    dauvao = dauvao.replace(/[\s.,;|-]+/g, ',')
+                   .replace(/^,+|,+$/g, ''); 
+
+    let uniquePairs = new Set();
+    let allPairs = [];
+
+    dauvao.split(',').forEach(num => {
+        num = num.trim();
+        if (num.length === 2) {
+           
+            allPairs.push(num);
+            uniquePairs.add(num);
+        } else if (num.length > 2) {
+        
+            for (let i = 0; i < num.length - 1; i++) {
+                let pair = num.slice(i, i + 2);
+                allPairs.push(pair);
+                uniquePairs.add(pair);
+            }
+        }
+    });
+
+ 
+    let dauvaoMap = new Map();
+    allPairs.forEach(num => {
+        num = num.trim();
+        if (num !== '') {
+            dauvaoMap.set(num, (dauvaoMap.get(num) || 0) + 1);
+        }
+    });
+
+ 
+    for (let i = 0; i <= 99; i++) {
+        let lo = i.toString().padStart(2, '0');
+        let count = dauvaoMap.get(lo) || 0;
+        listOfObjects.push({ lo: lo, count: count });
+    }
+
+
+    listOfObjects.sort((a, b) => b.count - a.count); 
+
+    let value1 = '';
+    let maxLevel = Math.max(...listOfObjects.map(obj => obj.count)); 
+    let listLevels = Array(maxLevel + 1).fill().map(() => []);       
+    listOfObjects.forEach(obj => {
+        listLevels[obj.count].push(obj.lo);
+    });
+
+    listLevels.forEach((nums, level) => {
+        if (nums.length > 0) {
+		
+            let levelStr = level < 10 
+                ? level.toString()  
+                : level.toString().split('').join(' ');
+
+            let numCountStr = nums.length === 100 
+                ? '1 0 0'  
+                : nums.length.toString().split('').join(' ');
+
+            value1 += `Mức: ${levelStr} (${numCountStr}) số\n${nums.join(',')}\n`;
+        }
+    });
+
+    daura.value = value1;
+}
+			
+        function getWildcardNum(val) {
+            return '0'.repeat(4 - String(val).length) + val;
+        }
+		
+        function TaoMucSoo(dauvaoo) {
+            var eachLine = dauvaoo.split(',');
+            var listOfObjects = [];
+            var list_lo = [];
+            for (i = 0; i <= 99; i++) {
+                var lo, count;
+                if (i <= 9) lo = '0' + i;
+                else lo = i;
+
+                count = countString(dauvaoo, lo);
+                listOfObjects.push({ lo: lo, count: count });
+
+            }
+            listOfObjects.sort(function (a, b) {
+                return a.count - b.count;
+            })
+            var value1, value2, check;
+            value1 = '';
+            value2 = '';
+            for (var cc = 0; cc <= 100000; cc++) {
+                for (var i in listOfObjects) {
+                    if (listOfObjects[i].count == cc) {
+                        check = true;
+                        value2 += listOfObjects[i].lo + ' ';
+                        list_lo.push(listOfObjects[i].lo)
+                    }
+                }
+                list_lo.sort();
+                if (check == true) {
+                    value1 += 'Mức: ' + cc + ' (' + list_lo.length + ' số) ' + '\n' + list_lo.join(',') + '\n';
+                    check = false;
+                    value2 = '';
+                    list_lo.length = 0;
+                }
+            }
+            return value1;
+        }
+
+
+        var multiSplit = function (str, delimeters) {
+            var result = [str];
+            if (typeof (delimeters) == 'string')
+                delimeters = [delimeters];
+            while (delimeters.length > 0) {
+                for (var i = 0; i < result.length; i++) {
+                    var tempSplit = result[i].split(delimeters[0]);
+                    result = result.slice(0, i).concat(tempSplit).concat(result.slice(i + 1));
+                }
+                delimeters.shift();
+            }
+            return result;
+        }
+        function isNumeric(value) {
+            if ((parseFloat(value) == parseInt(value)) && !isNaN(value)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function BoTrung(valueloc) {
+            var arrayValue = valueloc.split(',');
+            if (arrayValue.length <= 1) arrayValue = valueloc.split(' ');
+            var danloc = '';
+            for (var i = 0; i < arrayValue.length; i++) {
+                if (arrayValue[i].toString() != '') {
+                    if (danloc.indexOf(arrayValue[i].toString()) == -1) {
+                        danloc += arrayValue[i].toString() + ',';
+                    }
+                }
+            }
+            return danloc;
+        }
+	    function kc_Clear() {
+            document.getElementById('MainContent_txtInput').value = '';
+            document.getElementById('MainContent_txtOutput').value = '';
+        }
+	    function kc_Clear_1() {
+            document.getElementById('MainContent_txtInput1').value = '';
+            document.getElementById('MainContent_txtOutput1').value = '';
+        }
+	    function kc_Clear_2() {
+            document.getElementById('MainContent_txtDanSo1').value = '';
+			document.getElementById('MainContent_txtDanSo2').value = '';
+			document.getElementById('MainContent_txtDanSo3').value = '';
+        }		
+	    function k_Copy() {
+          var copyText = document.getElementById('MainContent_txtOutput');
+         copyText.select();
+		 document.execCommand("copy");
+   }		
+   	    function k_Copy_1() {
+          var copyText = document.getElementById('MainContent_txtDan1');
+         copyText.select();
+		 document.execCommand("copy");
+   }
+   	    function k_Copy_2() {
+          var copyText = document.getElementById('MainContent_txtDan3');
+         copyText.select();
+		 document.execCommand("copy");
+   }
+   	    function k_Copy_3() {
+          var copyText = document.getElementById('MainContent_txtDan5');
+         copyText.select();
+		 document.execCommand("copy");
+   }
+   	    function k_Copy_4() {
+          var copyText = document.getElementById('MainContent_txtOutput1');
+         copyText.select();
+		 document.execCommand("copy");
+   }   
+        function myTrim(x) {
+            return x.replace(/^\s+|\s+$/gm, '');
+        }
+
+        function openTab(evt, tabName) {
+            var i, tabContent, tabLinks;
+            
+
+            tabContent = document.getElementsByClassName("tab-pane");
+            for (i = 0; i < tabContent.length; i++) {
+                tabContent[i].classList.remove("active");
+            }
+            
+
+            tabLinks = document.getElementsByClassName("tab-link");
+            for (i = 0; i < tabLinks.length; i++) {
+                tabLinks[i].classList.remove("active");
+            }
+            
+     
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        var tabLinks = document.querySelectorAll('.tab-link');
+        tabLinks.forEach(function(link) {
+            link.addEventListener('click', function(event) {
+                if (event.target.hasAttribute('data-tab')) {
+                    event.preventDefault();
+                    openTab(event, event.target.getAttribute('data-tab'));
+                }
+            });
+        });
+
+
+        document.querySelector('.tab-link').click();
+
+
+function KiemtraKq() {
+ 
+    document.getElementById('lb_dlmucso').innerText = '';
+    document.getElementById('lb_dldan').innerText = '';
+
+    const kqInput = document.getElementById('kdh_txtKQ').value.trim(); 
+    const outputText = document.getElementById('MainContent_txtOutput').value.trim();
+    const catdanfinalText = document.getElementById('catdanfinal').value.trim();
+
+    let foundInOutput = false;
+    let dlMucSo = '';
+    if (outputText) {
+        const outputList = outputText.split(/\s|,|;/).map(item => item.trim());
+        if (outputList.includes(kqInput)) {
+            foundInOutput = true;
+            const outputLines = outputText.split('\n');
+            for (let i = 1; i < outputLines.length; i++) {
+                if (outputLines[i].includes(kqInput)) {
+               
+                    const match = outputLines[i - 1].match(/Mức:\s*.+/);
+                    if (match) {
+                        dlMucSo = match[0]; 
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    if (foundInOutput && dlMucSo) {
+        document.getElementById('lb_dlmucso').innerText = 'Số ' + kqInput +' xuất hiện tại: ' + dlMucSo;
+    }
+
+    let foundInCatdan = false;
+    let lowestDan = null;
+    if (catdanfinalText) {
+        const catdanLines = catdanfinalText.split('\n').map(line => line.trim());
+        for (let i = 0; i < catdanLines.length; i++) {
+            const line = catdanLines[i];
+            if (line.match(/^\d+x$/)) {
+
+                const currentDan = line; 
+                const nextLine = catdanLines[i + 1] || ''; 
+                const numbersInDan = nextLine.split(/,|;/).map(num => num.trim()); 
+
+                if (numbersInDan.includes(kqInput)) {
+                    foundInCatdan = true;
+                    lowestDan = currentDan; 
+                }
+            }
+        }
+    }
+
+
+    if (foundInCatdan && lowestDan) {
+        document.getElementById('lb_dldan').innerText = '|| Số ' + kqInput + ' có trong dàn: ' + lowestDan;
+    } else if (!foundInCatdan && catdanfinalText) {
+        document.getElementById('lb_dldan').innerText = '|| Số ' + kqInput + ' không tìm thấy trong dàn nào!';
+    }
+
+}
+    </script>
+
+    <table id="MainContent_Table1" style="width: 800px;">
+        
+	    <tbody>
+	           <tr>
+                <td style="width: 300px;">
+                    <span id="MainContent_Label1" style="display: inline-block; font-size: Medium; width: 300px;">
+                        Input Number: <input type="submit" class="btn btn-danger" onclick="kc_Clear()" name="ctl00$MainContent$txtInput; ctl00$MainContent$txtOutput"
+                           value="DEL" id="k_btnClear3" style="width: 80px; height: 35px; border-radius: 8px;"/></span>
+				 </td>
+                <td>
+					<input name="ctl00$MainContent$btnAdd2" class="btn btn-danger" value="2D" id="MainContent_btnAdd2" onclick="TaoMucSo2D()" type="submit" style="width: 110px; height: 35px; border-radius: 8px;"/>
+					&nbsp;&nbsp;
+				    <input type="submit" onclick="k_Copy()" class="btn btn-warning" name="ctl00$MainContent$txtOutput" value="Copy" id="k_btnCopy" style="width: 60px; height: 35px; margin-left: 5px; margin-right: 5px; border-radius: 8px;"/>
+				  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  <input name="ctl00$MainContent$btnAdd1" class="btn btn-danger" value="1D" id="MainContent_btnAdd1" onclick="TaoMucSo1D()" type="submit" style="width: 110px; height: 35px; margin-left: 7px; border-radius: 8px;"/>
+
+                    					
+                </td>
+				            </tr>
+            <tr>
+                <td style="width: 300px;">
+                    <textarea name="ctl00$MainContent$txtInput" rows="2" cols="20" id="MainContent_txtInput" style="font: Ariaxl; font-size: 16px;; height: 400px; width: 480px;"></textarea>
+                </td>
+                <td>
+                    <textarea name="ctl00$MainContent$txtOutput" rows="2" cols="20" id="MainContent_txtOutput" style="font: Arial; font-size: 16px;; height: 400px; width: 480px;">All number:
+
+Mức: 0 (1 0 0) số
+
+00 01 02 03 04 05 06 07 08 09 
+
+10 11 12 13 14 15 16 17 18 19 
+
+20 21 22 23 24 25 26 27 28 29 	
+
+30 31 32 33 34 35 36 37 38 39 
+
+40 41 42 43 44 45 46 47 48 49 
+
+50 51 52 53 54 55 56 57 58 59 
+
+60 61 62 63 64 65 66 67 68 69 
+
+70 71 72 73 74 75 76 77 78 79 
+
+80 81 82 83 84 85 86 87 88 89 
+
+90 91 92 93 94 95 96 97 98 99
+                    </textarea>
+                </td>
+            </tr>
+           
+        </tbody>
+    </table>
+    <br>
+	<center>
+							SELECT:
+							<select id="options" title="nbdl_name" name="options" style="height: 32px; margin-right: 5px;border-radius: 8px;">
+							   <option id='option1' value='nbDL1'>DL: Mặc Định</option>
+							   <option id='option2' value='nbDL2'>DL: Chống Nhầm</option>
+							</select>
+							<select id="optionscd" title="tscd_name" name="optionscd" style="height: 32px; margin-left: 5px;border-radius: 8px;">
+							   <option id='option3' value='tsCD1'>Dàn: 95/89/79/69...</option>
+							   <option id='option4' value='tsCD2'>Dàn: 96/88/78/68...</option>
+							   <option id='option5' value='tsCD3'>Tùy Chỉnh</option>
+							</select>
+            				<button class="btn btn-danger" onclick="xuoi()">XUÔI</button>
+            				<button class="btn btn-danger" onclick="nguoc()">NGƯỢC</button>
+            				<button class="btn btn-danger" onclick="deu()">ĐỀU</button>
+							<button class="btn btn-danger" onclick="giua()">GIỮA</button>
+            				<button class="btn btn-warning" onclick="copydancat()" style="margin-top: 5px;">Copy</button>
+							<button class="btn btn-warning" onclick="TaoMucSoM0M10()" style="margin-top: 5px;">Tạo Mức</button>
+							<button class="btn btn-danger" data-toggle="collapse" data-target="#thongsocatdan">(/)SET</button>          			
+						   <h1> <p style="font-size: 30px;">XUÂN CHÍNH ơi Mang tiền về cho má<br></p>
+      <!--p style="font-size: 15px;">
+    Dàn Xuôi:Lấy từ mức số cao đến mức thấp
+     &emsp;Dàn Ngược: Lấy từ mức số thấp đến mức cao<br>
+      Dàn Đều: Lấy từ mức số giữa lấy ra hai bên&emsp;Dàn Giữa: Lấy từ mức số hai bên lấy vào giữa
+     </p--> </h1></center>
+    <table id="" style="width: 1000px;">
+	    <tbody>
+		    <tr>
+		        <div class="container">
+            		<div class="col-md-12 col-lg-12 col-xs-12" > 
+            			<div style="width: 90%; margin: 20px auto; display: flex; display: none;">
+            				<textarea style="min-height: 200px; width: 100%; float: left;" id="inputudms"></textarea>
+            			</div>
+            
+            			<div style="width: 90%; margin: 0px; display: flex;">
+						       <textarea style="height: 30px; width: 100%; text-align: center; background-color: yellow" id="dangchem" readonly placeholder="chưa có dàn để cắt"></textarea></br>
+            			</div>            			
+            
+            			<div style="width: 90%; margin-top: 0px; margin-bottom: 25px; display: flex;">
+            				<textarea style="min-height: 300px; width: 100%; float: left;" id="catdanfinal"></textarea>
+            			</div>
+            
+            
+            			<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+            <div class="collapse" id="thongsocatdan">
+                <div class="card">
+                    
+                    <div class="card-header" style="background-color: orange; cursor: pointer; padding: 8px 15px; margin-bottom: 2px;" data-toggle="collapse" data-target="#chemTren" aria-expanded="false">
+                        <b>XUÔI</b> (Click để Ẩn/Hiện)
+                    </div>
+                    <div id="chemTren" class="collapse">
+                        <div class="card-body p-3 bg-light border mb-2" style="border-radius: 4px;">
+                            <div class="d-flex flex-wrap justify-content-start align-items-center" style="gap: 10px;">
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">9x:</label><input type="text" class="form-control text-center p-1" id="xuoi9x" value="95" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">8x:</label><input type="text" class="form-control text-center p-1" id="xuoi8x" value="89" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">7x:</label><input type="text" class="form-control text-center p-1" id="xuoi7x" value="79" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">6x:</label><input type="text" class="form-control text-center p-1" id="xuoi6x" value="69" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">5x:</label><input type="text" class="form-control text-center p-1" id="xuoi5x" value="59" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">4x:</label><input type="text" class="form-control text-center p-1" id="xuoi4x" value="49" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">3x:</label><input type="text" class="form-control text-center p-1" id="xuoi3x" value="39" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">2x:</label><input type="text" class="form-control text-center p-1" id="xuoi2x" value="29" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">1x:</label><input type="text" class="form-control text-center p-1" id="xuoi1x" value="19" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">0x:</label><input type="text" class="form-control text-center p-1" id="xuoi0x" value="9" style="width: 42px; height: 30px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-header" style="background-color: orange; cursor: pointer; padding: 8px 15px; margin-bottom: 2px;" data-toggle="collapse" data-target="#chemDuoi" aria-expanded="false">
+                        <b>NGƯỢC</b> (Click để Ẩn/Hiện)
+                    </div>
+                    <div id="chemDuoi" class="collapse">
+                        <div class="card-body p-3 bg-light border mb-2" style="border-radius: 4px;">
+                            <div class="d-flex flex-wrap justify-content-start align-items-center" style="gap: 10px;">
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">9x:</label><input type="text" class="form-control text-center p-1" id="nguoc9x" value="95" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">8x:</label><input type="text" class="form-control text-center p-1" id="nguoc8x" value="89" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">7x:</label><input type="text" class="form-control text-center p-1" id="nguoc7x" value="79" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">6x:</label><input type="text" class="form-control text-center p-1" id="nguoc6x" value="69" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">5x:</label><input type="text" class="form-control text-center p-1" id="nguoc5x" value="59" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">4x:</label><input type="text" class="form-control text-center p-1" id="nguoc4x" value="49" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">3x:</label><input type="text" class="form-control text-center p-1" id="nguoc3x" value="39" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">2x:</label><input type="text" class="form-control text-center p-1" id="nguoc2x" value="29" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">1x:</label><input type="text" class="form-control text-center p-1" id="nguoc1x" value="19" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">0x:</label><input type="text" class="form-control text-center p-1" id="nguoc0x" value="9" style="width: 42px; height: 30px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-header" style="background-color: orange; cursor: pointer; padding: 8px 15px; margin-bottom: 2px;" data-toggle="collapse" data-target="#chem2Dau" aria-expanded="false">
+                        <b>ĐỀU</b> (Click để Ẩn/Hiện)
+                    </div>
+                    <div id="chem2Dau" class="collapse">
+                        <div class="card-body p-3 bg-light border mb-2" style="border-radius: 4px;">
+                            <div class="d-flex flex-wrap justify-content-start align-items-center" style="gap: 10px;">
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">9x:</label><input type="text" class="form-control text-center p-1" id="deu9x" value="96" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">8x:</label><input type="text" class="form-control text-center p-1" id="deu8x" value="88" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">7x:</label><input type="text" class="form-control text-center p-1" id="deu7x" value="78" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">6x:</label><input type="text" class="form-control text-center p-1" id="deu6x" value="68" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">5x:</label><input type="text" class="form-control text-center p-1" id="deu5x" value="58" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">4x:</label><input type="text" class="form-control text-center p-1" id="deu4x" value="48" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">3x:</label><input type="text" class="form-control text-center p-1" id="deu3x" value="38" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">2x:</label><input type="text" class="form-control text-center p-1" id="deu2x" value="28" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">1x:</label><input type="text" class="form-control text-center p-1" id="deu1x" value="18" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">0x:</label><input type="text" class="form-control text-center p-1" id="deu0x" value="8" style="width: 42px; height: 30px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-header" style="background-color: orange; cursor: pointer; padding: 8px 15px; margin-bottom: 2px;" data-toggle="collapse" data-target="#chemGiua" aria-expanded="false">
+                        <b>GIỮA</b> (Click để Ẩn/Hiện)
+                    </div>
+                    <div id="chemGiua" class="collapse">
+                        <div class="card-body p-3 bg-light border mb-2" style="border-radius: 4px;">
+                            <div class="d-flex flex-wrap justify-content-start align-items-center" style="gap: 10px;">
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">9x:</label><input type="text" class="form-control text-center p-1" id="giua9x" value="96" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">8x:</label><input type="text" class="form-control text-center p-1" id="giua8x" value="88" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">7x:</label><input type="text" class="form-control text-center p-1" id="giua7x" value="78" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">6x:</label><input type="text" class="form-control text-center p-1" id="giua6x" value="68" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">5x:</label><input type="text" class="form-control text-center p-1" id="giua5x" value="58" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">4x:</label><input type="text" class="form-control text-center p-1" id="giua4x" value="48" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">3x:</label><input type="text" class="form-control text-center p-1" id="giua3x" value="38" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">2x:</label><input type="text" class="form-control text-center p-1" id="giua2x" value="28" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">1x:</label><input type="text" class="form-control text-center p-1" id="giua1x" value="18" style="width: 42px; height: 30px;"></div>
+                                <div class="d-flex align-items-center"><label class="m-0 mr-1 font-weight-bold">0x:</label><input type="text" class="form-control text-center p-1" id="giua0x" value="8" style="width: 42px; height: 30px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>  
+            </div>
+        </div>
+
+            		</div>
+            	</div>
+		    </tr>
+        </tbody>
+    </table>
+
+    <hr>
+	<script type="text/javascript">
+   let txttscd = ""; 
+   let txttscdfx = "";
+   let txttscdfn = "";
+   document.getElementById('optionscd').addEventListener('change', function () {
+      const selectedValue = this.value;
+
+      if (selectedValue === 'tsCD1') {
+         txttscd = "0";
+		 txttscdfx ="0";
+		 txttscdfn = "0";
+      } else if (selectedValue === 'tsCD2') {
+         txttscd = "1";
+		 txttscdfx ="2";
+		 txttscdfn = "-2";
+      } else {
+         txttscd = "";
+		 txttscdfx ="";
+		 txttscdfn = "";
+      }
+   });
+
+
+		function xuoi() {
+		    var b = document.getElementById('MainContent_txtOutput').value;
+		    document.getElementById('inputudms').value = b;
+
+			var text = document.getElementById('inputudms').value.trim();
+			
+			var temp = text.split("\n");
+			var text2 = "";
+			for(var i = 0; i< temp.length; i++){
+				i++;
+			 	if(i == temp.length - 1){
+			 		text2 += temp[i];
+				}else{
+					text2 += temp[i]+",";
+			 	}
+			}
+
+
+			var txtdangchem = "";
+			var txtxuoiout = "";
+
+			var a1 = 100 - parseInt(document.getElementById('xuoi9x').value - txttscd);
+			var a2 = 100 - parseInt(document.getElementById('xuoi8x').value - txttscd);
+			var a3 = 100 - parseInt(document.getElementById('xuoi7x').value - txttscd);
+			var a4 = 100 - parseInt(document.getElementById('xuoi6x').value - txttscd);
+			var a5 = 100 - parseInt(document.getElementById('xuoi5x').value - txttscd);
+			var a6 = 100 - parseInt(document.getElementById('xuoi4x').value - txttscd);
+			var a7 = 100 - parseInt(document.getElementById('xuoi3x').value - txttscd);
+			var a8 = 100 - parseInt(document.getElementById('xuoi2x').value - txttscd);
+			var a9 = 100 - parseInt(document.getElementById('xuoi1x').value - txttscd);
+			var a10 = 100 - parseInt(document.getElementById('xuoi0x').value - txttscd);
+
+			var str9x = text2.slice((a1 - txttscdfx)*3,300);
+			var str8x = text2.slice(a2*3,300);
+			var str7x = text2.slice(a3*3,300);
+			var str6x = text2.slice(a4*3,300);
+			var str5x = text2.slice(a5*3,300);
+			var str4x = text2.slice(a6*3,300);
+			var str3x = text2.slice(a7*3,300);
+			var str2x = text2.slice(a8*3,300);
+			var str1x = text2.slice(a9*3,300);
+			var str0x = text2.slice(a10*3,300);
+			
+			var arr9x = str9x.split(",");
+			var arr8x = str8x.split(",");
+			var arr7x = str7x.split(",");
+			var arr6x = str6x.split(",");
+			var arr5x = str5x.split(",");
+			var arr4x = str4x.split(",");
+			var arr3x = str3x.split(",");
+			var arr2x = str2x.split(",");
+			var arr1x = str1x.split(",");
+			var arr0x = str0x.split(",");
+
+			arr9x.sort(function(a, b){return a - b});
+			arr8x.sort(function(a, b){return a - b});
+			arr7x.sort(function(a, b){return a - b});
+			arr6x.sort(function(a, b){return a - b});
+			arr5x.sort(function(a, b){return a - b});
+			arr4x.sort(function(a, b){return a - b});
+			arr3x.sort(function(a, b){return a - b});
+			arr2x.sort(function(a, b){return a - b});
+			arr1x.sort(function(a, b){return a - b});
+			arr0x.sort(function(a, b){return a - b});
+
+			txtdangchem +='XUÔI'
+			txtxuoiout +=  '9x' + '\n' + arr9x.toString() + '\n' + 
+						   '8x' + '\n' + arr8x.toString() + '\n' +
+						   '7x' + '\n' + arr7x.toString() + '\n' +			
+						   '6x' + '\n' + arr6x.toString() + '\n' +
+						   '5x' + '\n' + arr5x.toString() + '\n' +			
+						   '4x' + '\n' + arr4x.toString() + '\n' +			
+						   '3x' + '\n' + arr3x.toString() + '\n' +
+						   '2x' + '\n' + arr2x.toString() + '\n' +
+						   '1x' + '\n' + arr1x.toString() + '\n' +
+						   '0x' + '\n' + arr0x.toString() + '\n';
+			document.getElementById('dangchem').value = txtdangchem;
+			document.getElementById('catdanfinal').value = txtxuoiout;
+		}
+
+   let txtnbnguoc = ""; 
+   let txtnbgiua = "";
+   document.getElementById('options').addEventListener('change', function () {
+      const selectedValue = this.value; 
+
+      if (selectedValue === 'nbDL1') {
+         txtnbnguoc = ""; 
+		 txtnbgiua = "";
+      } else {
+         txtnbnguoc = ","; 
+		 txtnbgiua = ",,"; 
+      }
+   });
+   
+		function nguoc() {
+		    var b = document.getElementById('MainContent_txtOutput').value;
+		    document.getElementById('inputudms').value = b;
+
+			var text = document.getElementById('inputudms').value.trim();
+			
+			var temp = text.split("\n");
+			var text2 = "";
+			for(var i = 0; i < temp.length; i++){
+				i++;
+			 	if(i == temp.length - 1){
+			 		text2 += temp[i];
+				}else{
+					text2 += temp[i]+",";
+			 	}
+			}
+
+			var txtdangchem = "";
+			var txtnguocout = "";
+
+			var a1 = parseInt(document.getElementById('nguoc9x').value - txttscd);
+			var a2 = parseInt(document.getElementById('nguoc8x').value - txttscd);
+			var a3 = parseInt(document.getElementById('nguoc7x').value - txttscd);
+			var a4 = parseInt(document.getElementById('nguoc6x').value - txttscd);
+			var a5 = parseInt(document.getElementById('nguoc5x').value - txttscd);
+			var a6 = parseInt(document.getElementById('nguoc4x').value - txttscd);
+			var a7 = parseInt(document.getElementById('nguoc3x').value - txttscd);
+			var a8 = parseInt(document.getElementById('nguoc2x').value - txttscd);
+			var a9 = parseInt(document.getElementById('nguoc1x').value - txttscd);
+			var a10 = parseInt(document.getElementById('nguoc0x').value - txttscd);
+
+			var str9x = text2.slice(0,(a1 - txttscdfn)*3-1).trim();
+			var str8x = text2.slice(0,a2*3-1).trim();
+			var str7x = text2.slice(0,a3*3-1).trim();
+			var str6x = text2.slice(0,a4*3-1).trim();
+			var str5x = text2.slice(0,a5*3-1).trim();
+			var str4x = text2.slice(0,a6*3-1).trim();
+			var str3x = text2.slice(0,a7*3-1).trim();
+			var str2x = text2.slice(0,a8*3-1).trim();
+			var str1x = text2.slice(0,a9*3-1).trim();
+			var str0x = text2.slice(0,a10*3-1).trim();
+			
+			var arr9x = str9x.split(",");
+			var arr8x = str8x.split(",");
+			var arr7x = str7x.split(",");
+			var arr6x = str6x.split(",");
+			var arr5x = str5x.split(",");
+			var arr4x = str4x.split(",");
+			var arr3x = str3x.split(",");
+			var arr2x = str2x.split(",");
+			var arr1x = str1x.split(",");
+			var arr0x = str0x.split(",");
+
+			arr9x.sort(function(a, b){return a - b});
+			arr8x.sort(function(a, b){return a - b});
+			arr7x.sort(function(a, b){return a - b});
+			arr6x.sort(function(a, b){return a - b});
+			arr5x.sort(function(a, b){return a - b});
+			arr4x.sort(function(a, b){return a - b});
+			arr3x.sort(function(a, b){return a - b});
+			arr2x.sort(function(a, b){return a - b});
+			arr1x.sort(function(a, b){return a - b});
+			arr0x.sort(function(a, b){return a - b});
+            console.log(arr9x)
+
+			txtdangchem +='NGƯỢC'
+			txtnguocout += '9x' + '\n' + arr9x.toString() + txtnbnguoc + '\n' + 
+						   '8x' + '\n' + arr8x.toString() + txtnbnguoc + '\n' +
+						   '7x' + '\n' + arr7x.toString() + txtnbnguoc + '\n' +
+						   '6x' + '\n' + arr6x.toString() + txtnbnguoc + '\n' +
+						   '5x' + '\n' + arr5x.toString() + txtnbnguoc + '\n' +
+						   '4x' + '\n' + arr4x.toString() + txtnbnguoc + '\n' +
+						   '3x' + '\n' + arr3x.toString() + txtnbnguoc + '\n' +
+						   '2x' + '\n' + arr2x.toString() + txtnbnguoc + '\n' +
+						   '1x' + '\n' + arr1x.toString() + txtnbnguoc + '\n' +
+						   '0x' + '\n' + arr0x.toString() + txtnbnguoc + '\n';
+			document.getElementById('dangchem').value = txtdangchem;
+			document.getElementById('catdanfinal').value = txtnguocout;
+		}
+        
+        function copydancat() {
+			  var copyText = document.getElementById("catdanfinal");
+			  copyText.select();
+			  document.execCommand("copy");
+		}
+
+		function deu() {
+		    var b = document.getElementById('MainContent_txtOutput').value;
+		    document.getElementById('inputudms').value = b;
+
+			var text = document.getElementById('inputudms').value.trim();
+			
+			var temp = text.split("\n");
+			var text2 = "";
+			for(var i = 0; i< temp.length; i++){
+				i++;
+			 	if(i == temp.length - 1){
+			 		text2 += temp[i];
+				}else{
+					text2 += temp[i]+",";
+			 	}
+			}
+
+
+			var txtdangchem = "";
+			var txtdeuout = "";
+
+			var a1 = parseInt(document.getElementById('deu9x').value);
+			var a2 = document.getElementById('deu8x').value;
+			var a3 = document.getElementById('deu7x').value;
+			var a4 = document.getElementById('deu6x').value;
+			var a5 = document.getElementById('deu5x').value;
+			var a6 = document.getElementById('deu4x').value;
+			var a7 = document.getElementById('deu3x').value;
+			var a8 = document.getElementById('deu2x').value;
+			var a9 = document.getElementById('deu1x').value;
+			var a10 = document.getElementById('deu0x').value;
+
+			var str9x = text2.slice((99-a1)*3/2 + 2,a1*3 - 1  + (100-a1)*3/2);
+			var str8x = text2.slice((99-a2)*3/2 + 2,a2*3 - 1  + (100-a2)*3/2);
+			var str7x = text2.slice((99-a3)*3/2 + 2,a3*3 - 1  + (100-a3)*3/2);
+			var str6x = text2.slice((99-a4)*3/2 + 2,a4*3 - 1  + (100-a4)*3/2);
+			var str5x = text2.slice((99-a5)*3/2 + 2,a5*3 - 1  + (100-a5)*3/2);
+			var str4x = text2.slice((99-a6)*3/2 + 2,a6*3 - 1  + (100-a6)*3/2);
+			var str3x = text2.slice((99-a7)*3/2 + 2,a7*3 - 1  + (100-a7)*3/2);
+			var str2x = text2.slice((99-a8)*3/2 + 2,a8*3 - 1  + (100-a8)*3/2);
+			var str1x = text2.slice((99-a9)*3/2 + 2,a9*3 - 1  + (100-a9)*3/2);
+			var str0x = text2.slice((99-a10)*3/2 + 2,a10*3 - 1  + (100-a10)*3/2);
+			
+			
+			var arr9x = str9x.split(",");
+			var arr8x = str8x.split(",");
+			var arr7x = str7x.split(",");
+			var arr6x = str6x.split(",");
+			var arr5x = str5x.split(",");
+			var arr4x = str4x.split(",");
+			var arr3x = str3x.split(",");
+			var arr2x = str2x.split(",");
+			var arr1x = str1x.split(",");
+			var arr0x = str0x.split(",");
+
+			arr9x.sort(function(a, b){return a - b});
+			arr8x.sort(function(a, b){return a - b});
+			arr7x.sort(function(a, b){return a - b});
+			arr6x.sort(function(a, b){return a - b});
+			arr5x.sort(function(a, b){return a - b});
+			arr4x.sort(function(a, b){return a - b});
+			arr3x.sort(function(a, b){return a - b});
+			arr2x.sort(function(a, b){return a - b});
+			arr1x.sort(function(a, b){return a - b});
+			arr0x.sort(function(a, b){return a - b});
+			
+			
+			txtdangchem +='ĐỀU'
+			txtdeuout +=  '9x' + '\n' + arr9x.toString() + '\n' + 
+						  '8x' + '\n' + arr8x.toString() + '\n' +
+						  '7x' + '\n' + arr7x.toString() + '\n' +	
+						  '6x' + '\n' + arr6x.toString() + '\n' +
+						  '5x' + '\n' + arr5x.toString() + '\n' +			
+						  '4x' + '\n' + arr4x.toString() + '\n' +			
+						  '3x' + '\n' + arr3x.toString() + '\n' +
+						  '2x' + '\n' + arr2x.toString() + '\n' +
+						  '1x' + '\n' + arr1x.toString() + '\n' +
+						  '0x' + '\n' + arr0x.toString() + '\n';
+			document.getElementById('dangchem').value = txtdangchem;
+			document.getElementById('catdanfinal').value = txtdeuout;
+		}
+
+
+		function giua() {
+		    var b = document.getElementById('MainContent_txtOutput').value;
+		    document.getElementById('inputudms').value = b;
+
+			var text = document.getElementById('inputudms').value.trim();
+			
+			var temp = text.split("\n");
+			var text2 = "";
+			for(var i = 0; i< temp.length; i++){
+				i++;
+			 	if(i == temp.length - 1){
+			 		text2 += temp[i];
+				}else{
+					text2 += temp[i]+",";
+			 	}
+			}
+
+
+			var txtdangchem = "";
+			var txtgiuaout = "";
+
+			var a1 = parseInt(document.getElementById('giua9x').value);
+			var a2 = document.getElementById('giua8x').value;
+			var a3 = document.getElementById('giua7x').value;
+			var a4 = document.getElementById('giua6x').value;
+			var a5 = document.getElementById('giua5x').value;
+			var a6 = document.getElementById('giua4x').value;
+			var a7 = document.getElementById('giua3x').value;
+			var a8 = document.getElementById('giua2x').value;
+			var a9 = document.getElementById('giua1x').value;
+			var a10 = document.getElementById('giua0x').value;
+
+			var str9x = text2.slice(0,a1/2*3) + text2.slice((a1/2+(100-a1))*3,100*3);
+			var str8x = text2.slice(0,a2/2*3) + text2.slice((a2/2+(100-a2))*3,100*3);
+			var str7x = text2.slice(0,a3/2*3) + text2.slice((a3/2+(100-a3))*3,100*3);
+			var str6x = text2.slice(0,a4/2*3) + text2.slice((a4/2+(100-a4))*3,100*3);
+			var str5x = text2.slice(0,a5/2*3) + text2.slice((a5/2+(100-a5))*3,100*3);
+			var str4x = text2.slice(0,a6/2*3) + text2.slice((a6/2+(100-a6))*3,100*3);
+			var str3x = text2.slice(0,a7/2*3) + text2.slice((a7/2+(100-a7))*3,100*3);
+			var str2x = text2.slice(0,a8/2*3) + text2.slice((a8/2+(100-a8))*3,100*3);
+			var str1x = text2.slice(0,a9/2*3) + text2.slice((a9/2+(100-a9))*3,100*3);
+			var str0x = text2.slice(0,a10/2*3) + text2.slice((a10/2+(100-a10))*3,100*3);
+			
+			
+			var arr9x = str9x.split(",");
+			var arr8x = str8x.split(",");
+			var arr7x = str7x.split(",");
+			var arr6x = str6x.split(",");
+			var arr5x = str5x.split(",");
+			var arr4x = str4x.split(",");
+			var arr3x = str3x.split(",");
+			var arr2x = str2x.split(",");
+			var arr1x = str1x.split(",");
+			var arr0x = str0x.split(",");
+
+			arr9x.sort(function(a, b){return a - b});
+			arr8x.sort(function(a, b){return a - b});
+			arr7x.sort(function(a, b){return a - b});
+			arr6x.sort(function(a, b){return a - b});
+			arr5x.sort(function(a, b){return a - b});
+			arr4x.sort(function(a, b){return a - b});
+			arr3x.sort(function(a, b){return a - b});
+			arr2x.sort(function(a, b){return a - b});
+			arr1x.sort(function(a, b){return a - b});
+			arr0x.sort(function(a, b){return a - b});
+			
+			var txtdangchem ='GIỮA';
+			txtgiuaout +=  '9x' + '\n' + arr9x.toString() + txtnbgiua + '\n' + 
+						   '8x' + '\n' + arr8x.toString() + txtnbgiua + '\n' +
+						   '7x' + '\n' + arr7x.toString() + txtnbgiua + '\n' +
+						   '6x' + '\n' + arr6x.toString() + txtnbgiua + '\n' +
+						   '5x' + '\n' + arr5x.toString() + txtnbgiua + '\n' +
+						   '4x' + '\n' + arr4x.toString() + txtnbgiua + '\n' +
+						   '3x' + '\n' + arr3x.toString() + txtnbgiua + '\n' +
+						   '2x' + '\n' + arr2x.toString() + txtnbgiua + '\n' +
+						   '1x' + '\n' + arr1x.toString() + txtnbgiua + '\n' +
+						   '0x' + '\n' + arr0x.toString() + txtnbgiua + '\n';
+			document.getElementById('dangchem').value = txtdangchem;
+			document.getElementById('catdanfinal').value = txtgiuaout;
+		}
+	</script>
+<div class="arrow_page_up" id="back-to-top"> <a href="#" title="Về đầu trang">
+<img src="./js/page_up.png" width="40" height="40" alt=""> </a></div> 
+<script>
+(function scroll_to_top(){let bt=$("#back-to-top");
+$(window).scroll(function(){$(this).scrollTop()>300?bt.fadeIn():bt.fadeOut();});
+bt.on("click",function(e){return $("html,body").animate({scrollTop:0},800),!1;});})();
+</script> 	
+<hr style="border: 2px dashed #0565B2; margin: 20px 0; border-radius: 5px;">
+<h3 style="text-align: center; color: #0565B2; font-family: Arial; text-transform: uppercase; margin: 10px 0;">--- Công Cụ Tạo, Lọc & Cắt Dàn ---</h3>
+<style>
+
+    :root {
+        --v2-primary: #0565B2;
+        --v2-secondary: #74c1d3;
+        --v2-active: #f9c;
+        --v2-bg-color: #f4f7f6;
+        --v2-text-color: #333;
+        --v2-border: #ccc;
+    }
+
+    .v2-container {
+        font-family: Arial, Helvetica, sans-serif;
+        color: var(--v2-text-color);
+        max-width: 1200px;
+        margin: 10px auto 30px auto;
+        background: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+    /* Tabs Styling */
+    .v2-tabs { background-color: #333; padding: 0; margin: 0; }
+    .v2-tab-links { list-style: none; padding: 0; margin: 0; display: flex; }
+    .v2-tab-links li { flex: 1; }
+    .v2-tab-link {
+        display: block; padding: 8px 5px; text-align: center; text-decoration: none;
+        color: #fff; font-weight: bold; text-transform: uppercase; font-size: 13px; transition: all 0.2s ease;
+    }
+    .v2-tab-link.active { background-color: var(--v2-active) !important; color: #fff; }
+    .v2-tab-link:hover { opacity: 0.9; }
+
+    /* Content Area */
+    .v2-main { padding: 10px; }
+    .v2-tab-pane { display: none; animation: v2-fadeIn 0.3s; }
+    .v2-tab-pane.active { display: block; }
+    @keyframes v2-fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* Grid Layout */
+    .v2-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .v2-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; } 
+    
+    .v2-card { border: 1px solid var(--v2-border); border-radius: 4px; padding: 8px; background: #fafafa; }
+    .v2-card h3 { margin: 0 0 8px 0; font-size: 14px; color: var(--v2-primary); border-bottom: 1px solid var(--v2-secondary); padding-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
+
+    .v2-container textarea { width: 100%; height: 60px; padding: 5px; border: 1px solid var(--v2-border); border-radius: 3px; box-sizing: border-box; resize: vertical; font-family: monospace; font-size: 13px; margin-bottom: 5px; }
+    
+    #v2_txtOutput, #v2_txtOutput1, #v2_txt_catdan_output { height: 100px; } 
+    #v2_txt_dan1, #v2_txt_dan2, #v2_txt_kq2dan { height: 150px; } 
+    
+    .v2-container input[type="text"], .v2-container input[type="number"] { width: 100%; padding: 5px; border: 1px solid var(--v2-border); border-radius: 3px; box-sizing: border-box; font-size: 13px; }
+
+    /* Buttons */
+    .v2-btn-group { display: flex; flex-wrap: wrap; gap: 5px; margin: 5px 0; }
+    .v2-btn-center { justify-content: center; }
+    .v2-container button { padding: 4px 8px; font-size: 12px; background-color: var(--v2-primary); color: #fff; border: none; border-radius: 3px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+    .v2-container button:hover { background-color: #044b85; }
+    .v2-btn-danger { background-color: #dc3545 !important; } .v2-btn-danger:hover { background-color: #c82333 !important; }
+    .v2-btn-success { background-color: #28a745 !important; } .v2-btn-success:hover { background-color: #218838 !important; }
+    .v2-btn-warning { background-color: #ffc107 !important; color: #333 !important; } .v2-btn-warning:hover { background-color: #e0a800 !important; }
+    .v2-btn-purple { background-color: #9b59b6 !important; } .v2-btn-purple:hover { background-color: #8e44ad !important; }
+    .v2-btn-info { background-color: #17a2b8 !important; } .v2-btn-info:hover { background-color: #138496 !important; }
+
+    .v2-result-box { margin-top: 5px; padding: 8px; background: #e9ecef; border-radius: 4px; border-left: 4px solid var(--v2-active); font-size: 13px; }
+    .v2-label-result { display: block; font-weight: bold; color: #d9534f; margin-top: 3px;}
+    .v2-badge { background: #d9534f; color: #fff; padding: 1px 6px; border-radius: 10px; font-size: 11px; }
+    .v2-form-inline { display: flex; align-items: center; gap: 5px; margin-bottom: 5px; font-size: 13px;}
+
+    
+    .v2-quick-picks {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        background: #fdfdfd;
+        border: 1px dashed var(--v2-secondary);
+        padding: 8px;
+        border-radius: 4px;
+        margin-bottom: 8px;
+        align-items: center;
+    }
+    
+    .v2-quick-btn {
+        background-color: #fff !important;
+        border-radius: 15px !important; /* Bo tròn viền */
+        padding: 3px 10px !important;
+        font-size: 11px !important;
+        transition: all 0.2s ease !important;
+        font-weight: bold !important;
+    }
+
+   
+    .c-blue { color: #007bff !important; border: 1px solid #007bff !important; }
+    .c-blue:hover { background-color: #007bff !important; color: #fff !important; box-shadow: 0 2px 5px rgba(0,123,255,0.3); }
+   
+    .c-red { color: #dc3545 !important; border: 1px solid #dc3545 !important; }
+    .c-red:hover { background-color: #dc3545 !important; color: #fff !important; box-shadow: 0 2px 5px rgba(220,53,69,0.3); }
+  
+    .c-purple { color: #6f42c1 !important; border: 1px solid #6f42c1 !important; }
+    .c-purple:hover { background-color: #6f42c1 !important; color: #fff !important; box-shadow: 0 2px 5px rgba(111,66,193,0.3); }
+    
+    .c-yellow { color: #d39e00 !important; border: 1px solid #d39e00 !important; }
+    .c-yellow:hover { background-color: #ffc107 !important; border-color: #ffc107 !important; color: #333 !important; box-shadow: 0 2px 5px rgba(255,193,7,0.4); }
+   
+    .c-green { color: #28a745 !important; border: 1px solid #28a745 !important; }
+    .c-green:hover { background-color: #28a745 !important; color: #fff !important; box-shadow: 0 2px 5px rgba(40,167,69,0.3); }
+
+    .v2-muc-wrapper {
+        position: relative;
+        display: inline-block;
+        margin: 5px 8px 5px 0;
+    }
+    
+    .v2-muc-wrapper input[type="checkbox"] { display: none; }
+    .v2-muc-wrapper label {
+        display: inline-block; background: #fff; border: 1px solid var(--v2-border);
+        padding: 4px 12px; border-radius: 4px; cursor: pointer; font-weight: bold;
+        color: #555; font-size: 12px; transition: all 0.2s ease; user-select: none;
+    }
+    .v2-muc-wrapper label:hover { background: #e9ecef; }
+    .v2-muc-wrapper input[type="checkbox"]:checked + label {
+        background: var(--v2-primary); color: #fff; border-color: var(--v2-primary); box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .v2-muc-badge {
+        position: absolute; top: -8px; right: -8px; background: #e74c3c; color: white; border-radius: 12px;
+        padding: 2px 5px; font-size: 10px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        border: 2px solid #fff; min-width: 12px; text-align: center; line-height: 1.2; pointer-events: none;
+    }
+
+</style>
+<div class="v2-container">
+    <div class="v2-tabs">
+        <ul class="v2-tab-links">
+    <li><a href="#" class="v2-tab-link active" data-v2tab="v2-tab1" style="background-color:#f1c40f; color:#333;">Tạo & Mức Số</a></li>
+    <li><a href="#" class="v2-tab-link" data-v2tab="v2-tab2" style="background-color:var(--v2-secondary); color:#333;">Chạm/Tổng/Hiệu</a></li>
+    <li><a href="#" class="v2-tab-link" data-v2tab="v2-tab3" style="background-color:#2ecc71;">Ghép 2 Dàn</a></li>
+    <li><a href="#" class="v2-tab-link" data-v2tab="v2-tab4" style="background-color:#e74c3c;">Lọc Số</a></li>
+    <li><a href="#" class="v2-tab-link" data-v2tab="v2-tab5" style="background-color:#16a085; color:#fff;">Tạo Dàn Tổng Hợp</a></li>
+    <li><a href="#" class="v2-tab-link" data-v2tab="v2-tab6" style="background-color:#e67e22; color:#fff;">Ghép Xiên (2, 3, 4)</a></li>
+</ul>
+    </div>
+    <div class="v2-main">
+	
+	<div id="v2-tab5" class="v2-tab-pane">
+
+    <div class="v2-card" style="margin-bottom: 12px; border: 1px solid #16a085; border-left: 4px solid #16a085; padding: 10px; background-color: #f8f9fa;">
+        <h3 style="color:#16a085; border-bottom: 1px solid #16a085; font-weight: bold; margin-top: 0; padding-bottom: 5px;">1. ĐẦU - ĐUÔI - TỔNG</h3>
+        
+        <div style="display: grid; grid-template-columns: 280px 1fr; gap: 15px; margin-top: 10px;">
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; gap: 8px;">
+                    <div style="flex:1; display: flex; flex-direction: column; text-align: center;">
+                        <label style="font-size:12px; font-weight:normal; color:#333; margin-bottom: 2px;">Đầu</label>
+                        <textarea id="b1_dau" style="width: 100%; height: 45px; resize: vertical; padding: 4px;" placeholder="123"></textarea>
+                    </div>
+                    <div style="flex:1; display: flex; flex-direction: column; text-align: center;">
+                        <label style="font-size:12px; font-weight:normal; color:#333; margin-bottom: 2px;">Đuôi</label>
+                        <textarea id="b1_duoi" style="width: 100%; height: 45px; resize: vertical; padding: 4px;" placeholder="456"></textarea>
+                    </div>
+                    <div style="flex:1; display: flex; flex-direction: column; text-align: center;">
+                        <label style="font-size:12px; font-weight:normal; color:#333; margin-bottom: 2px;">Tổng</label>
+                        <textarea id="b1_tong" style="width: 100%; height: 45px; resize: vertical; padding: 4px;" placeholder="05"></textarea>
+                    </div>
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <label style="font-size:12px; font-weight:normal; color:#333; width: 40px; text-align: center;">Thêm</label>
+                    <textarea id="b1_them" style="flex: 1; height: 35px; resize: vertical; padding: 4px;" placeholder="Ví dụ: 01,02..."></textarea>
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <label style="font-size:12px; font-weight:normal; color:#333; width: 40px; text-align: center;">Bỏ</label>
+                    <textarea id="b1_bo" style="flex: 1; height: 35px; resize: vertical; padding: 4px;" placeholder="Ví dụ: 77,88..."></textarea>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column;">
+                <div class="v2-btn-group" style="margin-bottom: 5px; display: flex; gap: 4px;">
+                    <button style="background:#3498db; color:#fff; border:none; padding:4px 10px; cursor:pointer;" onclick="td_XuLyDan(1, 'kethop')">Kết hợp</button>
+                    <button class="v2-btn-purple" style="padding:4px 10px;" onclick="td_XuLyDan(1, 'layhet')">Lấy hết</button>
+                    <button class="v2-btn-warning" style="padding:4px 10px;" onclick="td_XuLyDan(1, 'loaihet')">Loại hết</button>
+                    <button class="v2-btn-danger" style="padding:4px 10px;" onclick="td_XuLyDan(1, 'xoa')">Xóa</button>
+                </div>
+                
+                <textarea id="b1_kq" style="flex: 1; width: 100%; min-height: 110px; resize: vertical; padding: 8px;" placeholder="Kết quả hiển thị dàn số..." readonly></textarea>
+                
+                <div style="display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin-top: 8px;">
+                    <span class="v2-btn-danger" id="b1_count" style="background:#16a085; color:#fff; padding:4px 8px; border-radius:4px; font-size:12px; font-weight:bold;">(0 số)</span>
+                    <button class="v2-btn-success" style="background:#e74c3c; color:#fff; border:none; padding:4px 12px; font-weight:bold; border-radius:3px; cursor:pointer;" onclick="k_Copy_V2('b1_kq', this)">Copy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="v2-card" style="margin-bottom: 12px; border: 1px solid #3498db; border-left: 4px solid #3498db; padding: 10px; background-color: #f8f9fa;">
+        <h3 style="color:#3498db; border-bottom: 1px solid #3498db; font-weight: bold; margin-top: 0; padding-bottom: 5px;">2. CHẠM - TỔNG</h3>
+        
+        <div style="display: grid; grid-template-columns: 280px 1fr; gap: 15px; margin-top: 10px;">
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; gap: 8px;">
+                    <div style="flex:1; display: flex; flex-direction: column; text-align: center;">
+                        <label style="font-size:12px; font-weight:normal; color:#333; margin-bottom: 2px;">Chạm</label>
+                        <textarea id="b2_cham" style="width: 100%; height: 45px; resize: vertical; padding: 4px;" placeholder="Ví dụ: 27"></textarea>
+                    </div>
+                    <div style="flex:1; display: flex; flex-direction: column; text-align: center;">
+                        <label style="font-size:12px; font-weight:normal; color:#333; margin-bottom: 2px;">Tổng</label>
+                        <textarea id="b2_tong" style="width: 100%; height: 45px; resize: vertical; padding: 4px;" placeholder="Ví dụ: 38"></textarea>
+                    </div>
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <label style="font-size:12px; font-weight:normal; color:#333; width: 40px; text-align: center;">Thêm</label>
+                    <textarea id="b2_them" style="flex: 1; height: 35px; resize: vertical; padding: 4px;" placeholder="Ví dụ: 15,24..."></textarea>
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <label style="font-size:12px; font-weight:normal; color:#333; width: 40px; text-align: center;">Bỏ</label>
+                    <textarea id="b2_bo" style="flex: 1; height: 35px; resize: vertical; padding: 4px;" placeholder="Ví dụ: 00..."></textarea>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column;">
+                <div class="v2-btn-group" style="margin-bottom: 5px; display: flex; gap: 4px;">
+                    <button style="background:#3498db; color:#fff; border:none; padding:4px 10px; cursor:pointer;" onclick="td_XuLyDan(2, 'kethop')">Kết hợp</button>
+                    <button class="v2-btn-purple" style="padding:4px 10px;" onclick="td_XuLyDan(2, 'layhet')">Lấy hết</button>
+                    <button class="v2-btn-warning" style="padding:4px 10px;" onclick="td_XuLyDan(2, 'loaihet')">Loại hết</button>
+                    <button class="v2-btn-danger" style="padding:4px 10px;" onclick="td_XuLyDan(2, 'xoa')">Xóa</button>
+                </div>
+                
+                <textarea id="b2_kq" style="flex: 1; width: 100%; min-height: 110px; resize: vertical; padding: 8px;" placeholder="Kết quả hiển thị dàn số..." readonly></textarea>
+                
+                <div style="display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin-top: 8px;">
+                    <span class="v2-btn-danger" id="b2_count" style="background:#3498db; color:#fff; padding:4px 8px; border-radius:4px; font-size:12px; font-weight:bold;">(0 số)</span>
+                    <button class="v2-btn-success" style="background:#e74c3c; color:#fff; border:none; padding:4px 12px; font-weight:bold; border-radius:3px; cursor:pointer;" onclick="k_Copy_V2('b2_kq', this)">Copy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="v2-card" style="margin-bottom: 12px; border: 1px solid #9b59b6; border-left: 4px solid #9b59b6; padding: 10px; background-color: #f8f9fa;">
+        <h3 style="color:#9b59b6; border-bottom: 1px solid #9b59b6; font-weight: bold; margin-top: 0; padding-bottom: 5px;">3. BỘ - TỔNG</h3>
+        
+        <div style="display: grid; grid-template-columns: 280px 1fr; gap: 15px; margin-top: 10px;">
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; gap: 8px;">
+                    <div style="flex:1; display: flex; flex-direction: column; text-align: center;">
+                        <label style="font-size:12px; font-weight:normal; color:#333; margin-bottom: 2px;">Bộ</label>
+                        <textarea id="b3_bo" style="width: 100%; height: 45px; resize: vertical; padding: 4px;" placeholder="Ví dụ: 01,23"></textarea>
+                    </div>
+                    <div style="flex:1; display: flex; flex-direction: column; text-align: center;">
+                        <label style="font-size:12px; font-weight:normal; color:#333; margin-bottom: 2px;">Tổng</label>
+                        <textarea id="b3_tong" style="width: 100%; height: 45px; resize: vertical; padding: 4px;" placeholder="Ví dụ: 27"></textarea>
+                    </div>
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <label style="font-size:12px; font-weight:normal; color:#333; width: 40px; text-align: center;">Thêm</label>
+                    <textarea id="b3_them" style="flex: 1; height: 35px; resize: vertical; padding: 4px;" placeholder="Ví dụ: 44..."></textarea>
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <label style="font-size:12px; font-weight:normal; color:#333; width: 40px; text-align: center;">Bỏ</label>
+                    <textarea id="b3_bo_so" style="flex: 1; height: 35px; resize: vertical; padding: 4px;" placeholder="Ví dụ: 12..."></textarea>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column;">
+                <div class="v2-btn-group" style="margin-bottom: 5px; display: flex; gap: 4px;">
+                    <button style="background:#3498db; color:#fff; border:none; padding:4px 10px; cursor:pointer;" onclick="td_XuLyDan(3, 'kethop')">Kết hợp</button>
+                    <button class="v2-btn-purple" style="padding:4px 10px;" onclick="td_XuLyDan(3, 'layhet')">Lấy hết</button>
+                    <button class="v2-btn-warning" style="padding:4px 10px;" onclick="td_XuLyDan(3, 'loaihet')">Loại hết</button>
+                    <button class="v2-btn-danger" style="padding:4px 10px;" onclick="td_XuLyDan(3, 'xoa')">Xóa</button>
+                </div>
+                
+                <textarea id="b3_kq" style="flex: 1; width: 100%; min-height: 110px; resize: vertical; padding: 8px;" placeholder="Kết quả hiển thị dàn số..." readonly></textarea>
+                
+                <div style="display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin-top: 8px;">
+                    <span class="v2-btn-danger" id="b3_count" style="background:#9b59b6; color:#fff; padding:4px 8px; border-radius:4px; font-size:12px; font-weight:bold;">(0 số)</span>
+                    <button class="v2-btn-success" style="background:#e74c3c; color:#fff; border:none; padding:4px 12px; font-weight:bold; border-radius:3px; cursor:pointer;" onclick="k_Copy_V2('b3_kq', this)">Copy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+	
+	
+	
+	<div id="v2-tab5" class="v2-tab-pane">
+    <div class="v2-card">
+        <h3>🔍 Tính Năng Kiểm Tra Kết Quả Dàn Số</h3>
+        <div style="padding: 15px; background: #fff; border: 1px dashed var(--v2-secondary); border-radius: 4px;">
+            <div class="v2-form-inline" style="margin-bottom: 15px;">
+                <label style="font-weight: bold; width: 120px;">Nhập số cần dò:</label>
+                <input type="text" id="kdh_txtKQ" placeholder="Ví dụ: 25" style="width: 150px; text-align: center; font-weight: bold; color: #d9534f;">
+                <button class="v2-btn-success" onclick="KiemtraKq()" style="padding: 6px 15px; margin-left: 10px;">Bắt Đầu Kiểm Tra</button>
+            </div>
+            
+            <div class="v2-result-box">
+                <span style="font-weight: bold; color: var(--v2-primary);">📋 Trạng thái hiển thị:</span>
+                <span id="lb_dlmucso" class="v2-label-result">Chưa có dữ liệu kiểm tra mức số.</span>
+                <span id="lb_dldan" class="v2-label-result">Chưa có dữ liệu kiểm tra trong dàn.</span>
+            </div>
+        </div>
+    </div>
+</div>
+        
+<div id="v2-tab6" class="v2-tab-pane">
+    <div class="v2-card" style="border: 1px solid #e67e22; border-left: 4px solid #e67e22; padding: 15px; background-color: #f8f9fa;">
+        <h3 style="color:#e67e22; border-bottom: 1px solid #e67e22; font-weight: bold; margin-top: 0; padding-bottom: 5px;">🧩 TÍNH NĂNG GHÉP XIÊN (2, 3, 4)</h3>
+        
+        <div style="display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px;">
+            <div>
+                <label style="font-size:13px; font-weight:bold; color:#333;">Nhập dàn số cần ghép (Các số phân tách bằng dấu phẩy, khoảng trắng hoặc xuống dòng):</label>
+                <textarea id="xien_input" style="width: 100%; height: 80px; padding: 8px;" placeholder="Ví dụ: 01, 25, 47, 89, 36..."></textarea>
+            </div>
+            
+            <div class="v2-btn-group" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button style="background:#e67e22; color:#fff; border:none; padding:6px 15px; font-weight:bold; border-radius:3px; cursor:pointer;" onclick="XuLyGhepXien(2)">Ghép Xiên 2</button>
+                <button style="background:#d35400; color:#fff; border:none; padding:6px 15px; font-weight:bold; border-radius:3px; cursor:pointer;" onclick="XuLyGhepXien(3)">Ghép Xiên 3</button>
+                <button style="background:#c0392b; color:#fff; border:none; padding:6px 15px; font-weight:bold; border-radius:3px; cursor:pointer;" onclick="XuLyGhepXien(4)">Ghép Xiên 4</button>
+                <button class="v2-btn-danger" style="padding:6px 15px;" onclick="XoaXien()">Xóa</button>
+                <button class="v2-btn-success" style="padding:6px 15px;" onclick="CopyXien()">Copy</button>
+            </div>
+            
+            <div>
+                <label style="font-size:13px; font-weight:bold; color:#333;">Kết quả xiên ghép được <span id="xien_count" style="background:#e67e22; color:#fff; padding:2px 8px; border-radius:10px; font-size:12px; font-weight:bold;">(0 cặp)</span>:</label>
+                <textarea id="xien_output" style="width: 100%; height: 200px; padding: 8px; font-family: monospace;" placeholder="Các cặp số xiên sẽ được hiển thị tại đây..." readonly></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="v2-tab1" class="v2-tab-pane active">
+            <div class="v2-grid-2">
+                <div class="v2-card">
+                    <h3>Chọn Tạo Dàn</h3>
+                    
+                    <div class="v2-quick-picks">
+                        <b style="color:var(--v2-primary); font-size:12px; margin-right: 2px;">⚡ Nhập nhanh:</b>
+                        <button class="v2-quick-btn c-blue" onclick="LayDanNhanh_V2('dauchan')">Đầu Chẵn</button>
+                        <button class="v2-quick-btn c-red" onclick="LayDanNhanh_V2('daule')">Đầu Lẻ</button>
+                        <button class="v2-quick-btn c-purple" onclick="LayDanNhanh_V2('daube')">Đầu Bé</button>
+                        <button class="v2-quick-btn c-yellow" onclick="LayDanNhanh_V2('daulon')">Đầu Lớn</button>
+                         <button class="v2-quick-btn c-green" onclick="LayDanNhanh_V2('duoichan')">Đuôi Chẵn</button>
+						 <button class="v2-quick-btn c-green" onclick="LayDanNhanh_V2('bebe')">Bé Bé</button>
+					     <button class="v2-quick-btn c-green" onclick="LayDanNhanh_V2('lonlon')">Lớn Lớn</button>
+						 <button class="v2-quick-btn c-green" onclick="LayDanNhanh_V2('lonbe')">Lớn Bé</button>
+                        <button class="v2-quick-btn c-green" onclick="LayDanNhanh_V2('belon')">Bé Lớn</button>
+                        <button class="v2-quick-btn c-blue" onclick="LayDanNhanh_V2('duoile')">Đuôi Lẻ</button>
+                        <button class="v2-quick-btn c-red" onclick="LayDanNhanh_V2('tongchan')">Tổng Chẵn</button>
+                        <button class="v2-quick-btn c-purple" onclick="LayDanNhanh_V2('tongle')">Tổng Lẻ</button>
+                        <button class="v2-quick-btn c-green" onclick="LayDanNhanh_V2('chanchan')">Chẵn Chẵn</button>
+                        <button class="v2-quick-btn c-blue" onclick="LayDanNhanh_V2('chanle')">Chẵn Lẻ</button>
+                        <button class="v2-quick-btn c-red" onclick="LayDanNhanh_V2('lechan')">Lẻ Chẵn</button>
+                        <button class="v2-quick-btn c-purple" onclick="LayDanNhanh_V2('lele')">Lẻ Lẻ</button>
+						 <button class="v2-quick-btn c-yellow" onclick="LayDanNhanh_V2('kep')">Kép Bằng</button>
+                        <button class="v2-quick-btn c-yellow" onclick="LayDanNhanh_V2('keplech')">Kép Lệch</button>
+						<button class="v2-quick-btn c-yellow" onclick="LayDanNhanh_V2('kepam')">Kép Âm</button>
+						<button class="v2-quick-btn c-yellow" onclick="LayDanNhanh_V2('satkep')">Sát Kép</button>
+                    </div>
+                    <textarea id="v2_txtInput" placeholder="Nhập dãy số vào đây..."></textarea>
+                    <div class="v2-btn-group">
+                        <button onclick="TaoMucSo1D_V2()">Tạo Mức 1D</button>
+                        <button onclick="TaoMucSo2D_V2()">Tạo Mức 2D</button>
+                        <button class="v2-btn-danger" onclick="kc_Clear_V2('v2-tab1')">Xóa</button>
+                    </div>
+                    <hr style="margin: 5px 0; border: 0; border-top: 1px dashed #ccc;">
+                    <div class="v2-form-inline"><b>Dữ liệu Thêm:</b></div>
+                    <textarea id="v2_catdanfinal" style="height: 40px;" placeholder="Dán dữ liệu cần tạo mức khác vào đây..."></textarea>
+                    <button style="margin-top:2px" onclick="TaoMucSoM0M10_V2()">Tạo Mức 2D (Bảng phụ)</button>
+                </div>
+
+                <div class="v2-card">
+                    <h3>Kết Quả </h3>
+                    
+                    <div style="background:#e9ecef; padding:10px 10px 5px 10px; border-radius:4px; margin-bottom:10px; display:flex; flex-wrap:wrap; align-items:center;">
+                        <b style="color:var(--v2-primary); margin-right: 10px; font-size:13px;">Lọc Ghép:</b>
+                        
+                        <div class="v2-muc-wrapper">
+                            <input type="checkbox" id="v2_chk_all" onchange="v2_ToggleAllMuc(this)">
+                            <label for="v2_chk_all">ALL</label>
+                        </div>
+                        <div class="v2-muc-wrapper"><input type="checkbox" class="v2-chk-muc" id="v2_chk_m0" value="0" onchange="v2_RenderMucOutput()"><label for="v2_chk_m0">M0</label><span class="v2-muc-badge" id="v2_b_m0">0</span></div>
+                        <div class="v2-muc-wrapper"><input type="checkbox" class="v2-chk-muc" id="v2_chk_m1" value="1" onchange="v2_RenderMucOutput()"><label for="v2_chk_m1">M1</label><span class="v2-muc-badge" id="v2_b_m1">0</span></div>
+                        <div class="v2-muc-wrapper"><input type="checkbox" class="v2-chk-muc" id="v2_chk_m2" value="2" onchange="v2_RenderMucOutput()"><label for="v2_chk_m2">M2</label><span class="v2-muc-badge" id="v2_b_m2">0</span></div>
+                        <div class="v2-muc-wrapper"><input type="checkbox" class="v2-chk-muc" id="v2_chk_m3" value="3" onchange="v2_RenderMucOutput()"><label for="v2_chk_m3">M3</label><span class="v2-muc-badge" id="v2_b_m3">0</span></div>
+                        <div class="v2-muc-wrapper"><input type="checkbox" class="v2-chk-muc" id="v2_chk_m4" value="4" onchange="v2_RenderMucOutput()"><label for="v2_chk_m4">M4</label><span class="v2-muc-badge" id="v2_b_m4">0</span></div>
+                        <div class="v2-muc-wrapper"><input type="checkbox" class="v2-chk-muc" id="v2_chk_m5" value="5" onchange="v2_RenderMucOutput()"><label for="v2_chk_m5">M5</label><span class="v2-muc-badge" id="v2_b_m5">0</span></div>
+                        <div class="v2-muc-wrapper"><input type="checkbox" class="v2-chk-muc" id="v2_chk_m6" value="6" onchange="v2_RenderMucOutput()"><label for="v2_chk_m6">M6</label><span class="v2-muc-badge" id="v2_b_m6">0</span></div>
+                        <div class="v2-muc-wrapper"><input type="checkbox" class="v2-chk-muc" id="v2_chk_m7" value="7" onchange="v2_RenderMucOutput()"><label for="v2_chk_m7">M7</label><span class="v2-muc-badge" id="v2_b_m7">0</span></div>
+                        <div class="v2-muc-wrapper"><input type="checkbox" class="v2-chk-muc" id="v2_chk_m8" value="8" onchange="v2_RenderMucOutput()"><label for="v2_chk_m8">M8</label><span class="v2-muc-badge" id="v2_b_m8">0</span></div>
+                        <div class="v2-muc-wrapper"><input type="checkbox" class="v2-chk-muc" id="v2_chk_m9" value="9" onchange="v2_RenderMucOutput()"><label for="v2_chk_m9">M9</label><span class="v2-muc-badge" id="v2_b_m9">0</span></div>
+                        <div class="v2-muc-wrapper"><input type="checkbox" class="v2-chk-muc" id="v2_chk_m10" value="10" onchange="v2_RenderMucOutput()"><label for="v2_chk_m10">M10</label><span class="v2-muc-badge" id="v2_b_m10">0</span></div>
+                        
+                        <button style="margin-left:auto; margin-bottom:5px; background-color:#17a2b8;" onclick="v2_ShowDetailedMuc()">Bảng Chi Tiết</button>
+                    </div>
+
+                    <textarea id="v2_txtOutput" placeholder="Kết quả hiển thị ở đây..."></textarea>
+                    
+                    <div class="v2-btn-group">
+                        <button class="v2-btn-success" onclick="k_Copy_V2('v2_txtOutput', this)">Copy</button>
+                    </div>
+
+                    <div class="v2-result-box">
+                        <b>Kiểm tra KQ:</b>
+                        <div class="v2-form-inline" style="margin-top: 3px;">
+                            <input type="text" id="v2_txtKQ" placeholder="Nhập số (VD: 45)" style="width: 120px; margin:0;">
+                            <button class="v2-btn-warning" onclick="KiemtraKq_V2()">Kiểm Tra</button>
+                        </div>
+                        <span id="v2_lb_dlmucso" class="v2-label-result"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="v2-tab2" class="v2-tab-pane">
+    <div class="v2-grid-2">
+        <div class="v2-card">
+            <h3>Nhập Chạm/Tổng/Hiệu</h3>
+            <textarea id="v2_txtInput1" placeholder="Nhập số (VD: 1,2,3)..."></textarea>
+            <div class="v2-btn-group">
+                <button onclick="ChamTong_V2_WithCount()">Chạm+Tổng</button>
+                <button onclick="ChamHieu_V2_WithCount()">Chạm+Hiệu</button>
+                <button onclick="ChamThongHieu_V2_WithCount()">Chạm+Tổng+Hiệu</button>
+                <button onclick="ChamGhepTrong_V2_WithCount()">Ghép Trong</button>
+                <button onclick="ChamGhepNgoai_V2_WithCount()">Ghép Ngoài</button>
+                <button class="v2-btn-danger" onclick="kc_Clear_V2('v2-tab2')">Xóa</button>
+            </div>
+        </div>
+        <div class="v2-card">
+            <h3>Kết Quả <span class="v2-badge" id="v2_badge_tab2">0 số</span></h3>
+            <textarea id="v2_txtOutput1" placeholder="Kết quả trả về..."></textarea>
+            <div class="v2-btn-group">
+                <button class="v2-btn-success" onclick="k_Copy_V2('v2_txtOutput1', this)">Copy</button>
+                <button onclick="ChuyenSangTabKhac_V2('v2_txtOutput1', 'v2-tab1', 'v2_txtInput')">Tạo Mức</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div id="v2-tab3" class="v2-tab-pane">
+            <div class="v2-card" style="margin-bottom: 10px; padding: 8px;">
+                <div class="v2-btn-group v2-btn-center" style="margin: 0;">
+                    <span style="font-weight:bold; font-size:13px; line-height:24px; margin-right:5px; color: var(--v2-primary);">Thao tác:</span>
+                    <button onclick="XuLyHaiDan_V2('trung')">Lấy Trùng</button>
+                    <button class="v2-btn-purple" onclick="XuLyHaiDan_V2('gop')">Gộp Lại</button>
+                    <button class="v2-btn-warning" onclick="XuLyHaiDan_V2('1loai2')">Dàn 1 Loại 2</button>
+                    <button class="v2-btn-warning" onclick="XuLyHaiDan_V2('2loai1')">Dàn 2 Loại 1</button>
+                    <button class="v2-btn-danger" onclick="kc_Clear_V2('v2-tab3')">Xóa</button>
+                </div>
+            </div>
+            <div class="v2-grid-3">
+                <div class="v2-card">
+                    <h3>Dàn Số 1 <span class="v2-badge" id="v2_badge_dan1">0 số</span></h3>
+                    <textarea id="v2_txt_dan1" oninput="DemSoLive_V2('v2_txt_dan1', 'v2_badge_dan1')" placeholder="Nhập dàn 1..."></textarea>
+                </div>
+                <div class="v2-card">
+                    <h3>Dàn Số 2 <span class="v2-badge" id="v2_badge_dan2">0 số</span></h3>
+                    <textarea id="v2_txt_dan2" oninput="DemSoLive_V2('v2_txt_dan2', 'v2_badge_dan2')" placeholder="Nhập dàn 2..."></textarea>
+                </div>
+                <div class="v2-card">
+                    <h3>Kết Quả Trả Về <span class="v2-badge" id="v2_badge_kq2dan">0 số</span></h3>
+                    <textarea id="v2_txt_kq2dan" placeholder="Kết quả sau khi kết hợp..."></textarea>
+                    <div class="v2-btn-group" style="margin-top: 5px;">
+                        <button class="v2-btn-success" onclick="k_Copy_V2('v2_txt_kq2dan', this)">Copy</button>
+                        <button onclick="ChuyenSangTabKhac_V2('v2_txt_kq2dan', 'v2-tab1', 'v2_txtInput')">Tạo Mức</button>
+                        <button class="v2-btn-info" onclick="ChuyenSangTabKhac_V2('v2_txt_kq2dan', 'v2-tab4', 'v2_txt_catdan_input')">Cắt Dàn</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="v2-tab4" class="v2-tab-pane">
+            <div class="v2-grid-2">
+                <div class="v2-card">
+                    <h3>Dàn Số Cần Lọc <span class="v2-badge" id="v2_badge_catdan_input">0 số</span></h3>
+                    <textarea id="v2_txt_catdan_input" oninput="DemSoLive_V2('v2_txt_catdan_input', 'v2_badge_catdan_input')" placeholder="Dán dàn số..."></textarea>                    
+                    <div class="v2-form-inline" style="margin-top:5px; padding-top:5px; border-top:1px dashed #ccc;">
+                        <b>Số lượng muốn lấy:</b>
+                        <input type="number" id="v2_num_cat" placeholder="VD: 5 số" style="width: 80px; margin:0;">
+                    </div>
+                    <div class="v2-btn-group">
+                        <button class="v2-btn-info" onclick="XuLyCatDan_V2('xuoi')">Lọc số bé</button>                      
+                        <button class="v2-btn-purple" onclick="XuLyCatDan_V2('giua')">Lọc số cận bé</button>
+                        <button class="v2-btn-warning" onclick="XuLyCatDan_V2('deu')">Lọc số cận lớn</button>
+						 <button class="v2-btn-info" onclick="XuLyCatDan_V2('nguoc')">Lọc số lớn</button>
+                        <button class="v2-btn-danger" onclick="kc_Clear_V2('v2-tab4')">Xóa</button>
+                    </div>
+                </div>
+                <div class="v2-card">
+                    <h3>Kết Quả Cắt Dàn <span class="v2-badge" id="v2_badge_catdan_output">0 số</span></h3>
+                    <textarea id="v2_txt_catdan_output" placeholder="Dàn số đã cắt..."></textarea>
+                    <div class="v2-btn-group">
+                        <button class="v2-btn-success" onclick="k_Copy_V2('v2_txt_catdan_output', this)">Copy</button>
+                        <button onclick="ChuyenSangTabKhac_V2('v2_txt_catdan_output', 'v2-tab1', 'v2_txtInput')">Tạo Mức</button>
+                        <button class="v2-btn-purple" onclick="ChuyenSangTabKhac_V2('v2_txt_catdan_output', 'v2-tab3', 'v2_txt_dan1')">Lọc 2 Dàn</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    document.querySelectorAll('.v2-tab-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            ChuyenTab_V2(this.getAttribute('data-v2tab'));
+        });
+    });
+
+    function ChuyenTab_V2(tabName) {
+        document.querySelectorAll(".v2-tab-pane").forEach(el => el.classList.remove("active"));
+        document.querySelectorAll(".v2-tab-link").forEach(el => el.classList.remove("active"));
+        document.getElementById(tabName).classList.add("active");
+        document.querySelector(`.v2-tab-link[data-v2tab="${tabName}"]`).classList.add("active");
+    }
+
+    function ChuyenSangTabKhac_V2(idSource, tabTarget, idTarget) {
+        var data = document.getElementById(idSource).value;
+        if (data.trim() === '') { alert('Chưa có kết quả để chuyển!'); return; }
+        document.getElementById(idTarget).value = data;
+        
+        if(idTarget === 'v2_txt_dan1') DemSoLive_V2('v2_txt_dan1', 'v2_badge_dan1');
+        if(idTarget === 'v2_txt_catdan_input') DemSoLive_V2('v2_txt_catdan_input', 'v2_badge_catdan_input');
+        ChuyenTab_V2(tabTarget);
+    }
+
+    function parseDanToSet_V2(str) {
+        var result = new Set();
+        str.replace(/[\s.,;|-]+/g, ',').split(',').forEach(num => { if(num.trim() !== "") result.add(num.trim()); });
+        return result;
+    }
+
+    function DemSoLive_V2(idInput, idBadge) {
+        document.getElementById(idBadge).innerText = parseDanToSet_V2(document.getElementById(idInput).value).size + " số";
+    }
+    let v2_mucData = {};
+    let v2_detailedText = "";
+    
+    function countString_V2(str, search) { return str.split(search).length - 1; }
+
+    function _ProcessMucSoData(listOfObjects) {
+        v2_mucData = {};
+        for(let i=0; i<=10; i++) v2_mucData[i] = [];
+        
+        listOfObjects.forEach(obj => {
+            let c = obj.count;
+            if(c <= 10) v2_mucData[c].push(obj.lo);
+        });
+
+        for(let i=0; i<=10; i++) {
+            let badge = document.getElementById('v2_b_m' + i);
+            if(badge) badge.innerText = v2_mucData[i].length;
+        }
+
+        v2_detailedText = "";
+        let maxLevel = Math.max(...listOfObjects.map(o => o.count), 0);
+        let listLevels = Array(maxLevel + 1).fill().map(() => []);
+        
+        listOfObjects.forEach(o => listLevels[o.count].push(o.lo));
+
+        listLevels.forEach((nums, level) => {
+            if (nums.length > 0) {
+                let levelStr = level < 10 ? level.toString() : level.toString().split('').join(' ');
+                let numCountStr = nums.length === 100 ? '1 0 0' : nums.length.toString().split('').join(' ');
+                v2_detailedText += `Mức: ${levelStr} (${numCountStr}) số\n${nums.join(',')}\n`;
+            }
+        });
+
+        document.getElementById('v2_chk_all').checked = false;
+        document.querySelectorAll('.v2-chk-muc').forEach(cb => cb.checked = false);
+        document.getElementById('v2_txtOutput').value = v2_detailedText;
+    }
+
+    function TaoMucSo1D_V2() {
+        var dauvao = document.getElementById('v2_txtInput').value;
+        var listOfObjects = [];
+        for (let i = 0; i <= 9; i++) { listOfObjects.push({ lo: i.toString(), count: countString_V2(dauvao, i.toString()) }); }
+        listOfObjects.sort((a, b) => a.count - b.count);
+        _ProcessMucSoData(listOfObjects);
+    }
+
+    function _XuLyTaoMucSo_V2(dauvao) {
+        dauvao = dauvao.replace(/[\s.,;|-]+/g, ',').replace(/^,+|,+$/g, ''); 
+        let allPairs = [];
+        dauvao.split(',').forEach(num => {
+            num = num.trim();
+            if (num.length === 2) allPairs.push(num);
+            else if (num.length > 2) { for (let i = 0; i < num.length - 1; i++) allPairs.push(num.slice(i, i + 2)); }
+        });
+        let dauvaoMap = new Map();
+        allPairs.forEach(num => { if (num !== '') dauvaoMap.set(num, (dauvaoMap.get(num) || 0) + 1); });
+        let listOfObjects = [];
+        for (let i = 0; i <= 99; i++) { 
+            let lo = i.toString().padStart(2, '0'); 
+            listOfObjects.push({ lo: lo, count: dauvaoMap.get(lo) || 0 }); 
+        }
+        listOfObjects.sort((a, b) => b.count - a.count); 
+        _ProcessMucSoData(listOfObjects);
+    }
+
+    function TaoMucSo2D_V2() { _XuLyTaoMucSo_V2(document.getElementById('v2_txtInput').value); }
+    function TaoMucSoM0M10_V2() { _XuLyTaoMucSo_V2(document.getElementById('v2_catdanfinal').value); }
+
+    function v2_ToggleAllMuc(checkbox) {
+        let isChecked = checkbox.checked;
+        document.querySelectorAll('.v2-chk-muc').forEach(cb => cb.checked = isChecked);
+        v2_RenderMucOutput();
+    }
+
+    function v2_RenderMucOutput() {
+        let selected = [];
+        let isAnyChecked = false;
+        let allChecked = true;
+
+        document.querySelectorAll('.v2-chk-muc').forEach(cb => {
+            if(cb.checked) { isAnyChecked = true; if(v2_mucData[cb.value]) selected = selected.concat(v2_mucData[cb.value]); } 
+            else { allChecked = false; }
+        });
+
+        document.getElementById('v2_chk_all').checked = allChecked;
+        let daura = document.getElementById('v2_txtOutput');
+        
+        if(!isAnyChecked) { daura.value = v2_detailedText; } 
+        else { selected.sort(); daura.value = selected.join(','); }
+    }
+
+    function v2_ShowDetailedMuc() {
+        document.getElementById('v2_chk_all').checked = false;
+        document.querySelectorAll('.v2-chk-muc').forEach(cb => cb.checked = false);
+        document.getElementById('v2_txtOutput').value = v2_detailedText;
+    }
+
+    function XuLyCatDan_V2(type) {
+        let inputStr = document.getElementById('v2_txt_catdan_input').value;
+        let numInput = document.getElementById('v2_num_cat').value;
+        let N = parseInt(numInput);
+        if (isNaN(N) || N <= 0) { alert("Vui lòng nhập số lượng (N) cần cắt hợp lệ!"); return; }
+        let arr = Array.from(parseDanToSet_V2(inputStr)).sort((a,b) => a - b);
+        let L = arr.length;
+        if (L === 0) { alert("Vui lòng nhập dàn số cần cắt!"); return; }
+        if (N > L) { alert(`Bạn muốn cắt ${N} số nhưng dàn chỉ có ${L} số. Đã xuất toàn bộ dàn.`); N = L; }
+        let result = [];
+        if (type === 'xuoi') result = arr.slice(0, N);
+        else if (type === 'nguoc') result = arr.slice(L - N, L);
+        else if (type === 'giua') { let start = Math.floor((L - N) / 2); result = arr.slice(start, start + N); } 
+        else if (type === 'deu') {
+            if (N === 1) result.push(arr[Math.floor(L/2)]);
+            else { let step = L / N; for (let i = 0; i < N; i++) { let idx = Math.floor(i * step + step / 2); if(idx >= L) idx = L - 1; result.push(arr[idx]); } }
+        }
+        document.getElementById('v2_txt_catdan_output').value = result.join(', ');
+        document.getElementById('v2_badge_catdan_output').innerText = result.length + " số";
+    }
+
+    function XuLyHaiDan_V2(type) {
+        var set1 = parseDanToSet_V2(document.getElementById('v2_txt_dan1').value);
+        var set2 = parseDanToSet_V2(document.getElementById('v2_txt_dan2').value);
+        var resultSet = new Set();
+        if (type === 'trung') set1.forEach(num => { if(set2.has(num)) resultSet.add(num); });
+        else if (type === 'gop') { set1.forEach(num => resultSet.add(num)); set2.forEach(num => resultSet.add(num)); }
+        else if (type === '1loai2') set1.forEach(num => { if(!set2.has(num)) resultSet.add(num); });
+        else if (type === '2loai1') set2.forEach(num => { if(!set1.has(num)) resultSet.add(num); });
+        var arrResult = Array.from(resultSet).sort((a,b) => a - b);
+        document.getElementById('v2_txt_kq2dan').value = arrResult.join(', ');
+        document.getElementById('v2_badge_kq2dan').innerText = arrResult.length + " số";
+    }
+
+    function ChamTong_V2() { _XuLyToHop_V2((g) => BoTrung_V2(Cham_V2(g) + Tong_V2(g))); }
+    function ChamHieu_V2() { _XuLyToHop_V2((g) => BoTrung_V2(Cham_V2(g) + Hieu_V2(g))); }
+    function ChamThongHieu_V2() { _XuLyToHop_V2((g) => BoTrung_V2(Cham_V2(g) + Tong_V2(g) + Hieu_V2(g))); }
+    function ChamGhepTrong_V2() { _XuLyToHop_V2((g) => BoTrung_V2(GhepTrong_V2(g))); }
+    function ChamGhepNgoai_V2() { _XuLyToHop_V2((g) => GhepNgoai_V2(g)); }
+
+    function _XuLyToHop_V2(logicFunc) {
+        var input = document.getElementById('v2_txtInput1').value; var dan = '';
+        input.replace(/[\s.-]+/g, ',').split(',').forEach(val => { if (val.trim() !== '') dan += logicFunc(val.trim()); });
+        document.getElementById('v2_txtOutput1').value = BoTrung_V2(dan).replace(/,$/, '');
+    }
+    function Cham_V2(v) { let dan=''; for(let i=0;i<v.length;i++){ let c=v[i]; if(!isNaN(c)){ for(let j=0;j<=9;j++) dan+=j+c+','+c+j+','; } } return dan; }
+    function Tong_V2(v) { let dan=''; for(let k=0;k<v.length;k++){ let t=v[k]; if(!isNaN(t)){ for(let i=0;i<=9;i++){ for(let j=0;j<=9;j++) if(((i+j)%10)==t) dan+=i+""+j+','; } } } return dan; }
+    function Hieu_V2(v) { let dan=''; for(let k=0;k<v.length;k++){ let t=v[k]; if(!isNaN(t)){ for(let i=0;i<=9;i++){ for(let j=0;j<=9;j++) if(Math.abs(i-j)==t) dan+=i+""+j+','; } } } return dan; }
+    function GhepTrong_V2(v) { let dan=''; for(let i=0;i<v.length;i++){ for(let j=0;j<v.length;j++) dan+=v[i]+v[j]+','; } return dan; }
+    function GhepNgoai_V2(v) { let dan=''; for(let i=0;i<v.length;i++){ let c=v[i]; if(!isNaN(c)){ for(let j=0;j<=9;j++) if(!v.includes(j.toString())) dan+=c+j+','+j+c+','; } } return BoTrung_V2(dan).replace(/,$/, ''); }
+    function BoTrung_V2(val) { return [...new Set(val.replace(/[\s.-]+/g, ',').split(',').filter(i => i !== ''))].join(','); }
+
+   function k_Copy_V2(id, btn) {
+    var copyText = document.getElementById(id); 
+
+    if (!copyText.value || copyText.value.trim() === '') {
+        var originalText = btn.innerHTML;
+        btn.innerHTML = "❌ Trống!";
+        btn.style.backgroundColor = "#6c757d"; 
+        setTimeout(function() { 
+            btn.innerHTML = originalText; 
+            btn.style.backgroundColor = ""; 
+        }, 1500);
+        return; 
+    }
+
+    copyText.select(); 
+    document.execCommand("copy"); 
+    
+    var count = parseDanToSet_V2(copyText.value).size;
+    var originalText = btn.innerHTML;
+    btn.innerHTML = "✔ Đã Copy (" + count + ")"; 
+    btn.style.backgroundColor = "#218838"; 
+    
+    setTimeout(function() { 
+        btn.innerHTML = originalText; 
+        btn.style.backgroundColor = ""; 
+    }, 2000);
+}
+    
+    function kc_Clear_V2(tab) {
+        if(tab === 'v2-tab1') {
+            document.getElementById('v2_txtInput').value = ''; document.getElementById('v2_txtOutput').value = ''; document.getElementById('v2_catdanfinal').value = '';
+            document.getElementById('v2_txtKQ').value = ''; document.getElementById('v2_lb_dlmucso').innerText = '';
+            document.getElementById('v2_chk_all').checked = false;
+            document.querySelectorAll('.v2-chk-muc').forEach(cb => cb.checked = false);
+            for(let i=0; i<=10; i++) { let b = document.getElementById('v2_b_m' + i); if(b) b.innerText = '0'; }
+            v2_mucData = {}; v2_detailedText = "";
+        } else if (tab === 'v2-tab2') {
+            document.getElementById('v2_txtInput1').value = ''; document.getElementById('v2_txtOutput1').value = '';
+        } else if (tab === 'v2-tab3') {
+            document.getElementById('v2_txt_dan1').value = ''; document.getElementById('v2_txt_dan2').value = ''; document.getElementById('v2_txt_kq2dan').value = '';
+            DemSoLive_V2('v2_txt_dan1','v2_badge_dan1'); DemSoLive_V2('v2_txt_dan2','v2_badge_dan2'); document.getElementById('v2_badge_kq2dan').innerText = '0 số';
+        } else if (tab === 'v2-tab4') {
+            document.getElementById('v2_txt_catdan_input').value = ''; document.getElementById('v2_num_cat').value = ''; document.getElementById('v2_txt_catdan_output').value = '';
+            DemSoLive_V2('v2_txt_catdan_input','v2_badge_catdan_input'); document.getElementById('v2_badge_catdan_output').innerText = '0 số';
+        }
+    }
+    
+    function KiemtraKq_V2() {
+        document.getElementById('v2_lb_dlmucso').innerText = '';
+        var kq = document.getElementById('v2_txtKQ').value.trim();
+        if (kq === '') return;
+        var textOut = v2_detailedText; 
+        if (textOut === '') { textOut = document.getElementById('v2_txtOutput').value; }
+        
+        var lines = textOut.split('\n');
+        let found = false;
+        for (let i = 1; i < lines.length; i++) {
+            if (lines[i].includes(kq)) {
+                let m = lines[i - 1].match(/Mức:\s*.+/);
+                if (m) document.getElementById('v2_lb_dlmucso').innerText = '✅ Có mặt tại: ' + m[0];
+                found = true; break;
+            }
+        }
+        if(!found) document.getElementById('v2_lb_dlmucso').innerText = '❌ Không tìm thấy số ' + kq + ' trong bảng mức.';
+    }
+    
+    function LayDanNhanh_V2(str) {
+        const dans = {
+            'dauchan': '00,01,02,03,04,05,06,07,08,09,20,21,22,23,24,25,26,27,28,29,40,41,42,43,44,45,46,47,48,49,60,61,62,63,64,65,66,67,68,69,80,81,82,83,84,85,86,87,88,89',
+            'daule': '10,11,12,13,14,15,16,17,18,19,30,31,32,33,34,35,36,37,38,39,50,51,52,53,54,55,56,57,58,59,70,71,72,73,74,75,76,77,78,79,90,91,92,93,94,95,96,97,98,99',
+            'daube': '00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49',
+            'daulon': '50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99',
+            'duoichan': '00,02,04,06,08,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98',
+            'duoile': '01,03,05,07,09,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99',
+            'tongchan': '00,02,04,06,08,11,13,15,17,19,20,22,24,26,28,31,33,35,37,39,40,42,44,46,48,51,53,55,57,59,60,62,64,66,68,71,73,75,77,79,80,82,84,86,88,91,93,95,97,99',
+            'tongle': '01,03,05,07,09,10,12,14,16,18,21,23,25,27,29,30,32,34,36,38,41,43,45,47,49,50,52,54,56,58,61,63,65,67,69,70,72,74,76,78,81,83,85,87,89,90,92,94,96,98',
+            'kep': '00,11,22,33,44,55,66,77,88,99',
+			'keplech' : '05,50,16,61,27,72,38,83,49,94', 
+            'kepam' : '07,70,14,41,29,92,36,63,58,85',
+            'satkep' : '01,10,12,21,23,32,34,43,45,54,56,65,67,76,78,87,89,98,09,90',
+            'chanchan': '00,22,44,66,88,02,20,04,40,06,60,08,80,24,42,26,62,28,82,46,64,48,84,68,86',
+            'chanle': '01,03,05,07,09,21,23,25,27,29,41,43,45,47,49,61,63,65,67,69,81,83,85,87,89',
+            'lechan': '10,12,14,16,18,30,32,34,36,38,50,52,54,56,58,70,72,74,76,78,90,92,94,96,98',
+            'lele': '11,33,55,77,99,13,31,15,51,17,71,19,91,35,53,37,73,39,93,57,75,59,95,79,97',
+			'bebe' : '00,11,22,33,44,01,10,02,20,03,30,04,40,12,21,13,31,14,41,23,32,24,42,34,43',
+            'belon' : '05,06,07,08,09,15,16,17,18,19,25,26,27,28,29,35,36,37,38,39,45,46,47,48,49',
+            'lonbe' : '90,91,92,93,94,80,81,82,83,84,70,71,72,73,74,60,61,62,63,64,50,51,52,53,54',
+            'lonlon' : '55,66,77,88,99,56,65,57,75,58,85,59,95,67,76,68,86,69,96,78,87,79,97,89,98',
+        };
+        if(dans[str]) {
+            var inp = document.getElementById('v2_txtInput');
+            inp.value = inp.value ? inp.value + ',' + dans[str] : dans[str];
+        }
+    }
+	
+    function UpdateTab2Count() {
+        let val = document.getElementById('v2_txtOutput1').value;
+        let count = (val.trim() === '') ? 0 : parseDanToSet_V2(val).size;
+        document.getElementById('v2_badge_tab2').innerText = count + " số";
+    }
+
+    function ChamTong_V2_WithCount() { ChamTong_V2(); UpdateTab2Count(); }
+    function ChamHieu_V2_WithCount() { ChamHieu_V2(); UpdateTab2Count(); }
+    function ChamThongHieu_V2_WithCount() { ChamThongHieu_V2(); UpdateTab2Count(); }
+    function ChamGhepTrong_V2_WithCount() { ChamGhepTrong_V2(); UpdateTab2Count(); }
+    function ChamGhepNgoai_V2_WithCount() { ChamGhepNgoai_V2(); UpdateTab2Count(); }
+	
+	
+function td_GetNumbers(type, valStr) {
+    let res = new Set();
+    if (!valStr || valStr.trim() === "") return res;
+    
+
+    if (type === 'bo') {
+        let pairs = valStr.match(/\d{2}/g) || [];
+        pairs.forEach(p => {
+            let x = parseInt(p[0]), y = parseInt(p[1]);
+            let xs = (x + 5) % 10, ys = (y + 5) % 10;
+            res.add(`${x}${y}`); res.add(`${x}${ys}`);
+            res.add(`${xs}${y}`); res.add(`${xs}${ys}`);
+            res.add(`${y}${x}`); res.add(`${y}${xs}`);
+            res.add(`${ys}${x}`); res.add(`${ys}${xs}`);
+        });
+        return res;
+    }
+
+    let digits = valStr.replace(/\D/g, '').split('');
+    for (let i = 0; i <= 9; i++) {
+        for (let j = 0; j <= 9; j++) {
+            let num = `${i}${j}`;
+            if (type === 'dau' && digits.includes(i.toString())) res.add(num);
+            if (type === 'duoi' && digits.includes(j.toString())) res.add(num);
+            if (type === 'tong' && digits.includes(((i + j) % 10).toString())) res.add(num);
+            if (type === 'cham' && (digits.includes(i.toString()) || digits.includes(j.toString()))) res.add(num);
+        }
+    }
+    return res;
+}
+
+function td_GetList(valStr) {
+    let res = new Set();
+    let matches = valStr.match(/\d{2}/g) || [];
+    matches.forEach(m => res.add(m));
+    return res;
+}
+
+function td_XuLyDan(blockIndex, action) {
+    if (action === 'xoa') {
+        if(blockIndex === 1) { document.getElementById('b1_dau').value=''; document.getElementById('b1_duoi').value=''; document.getElementById('b1_tong').value=''; document.getElementById('b1_them').value=''; document.getElementById('b1_bo').value=''; }
+        if(blockIndex === 2) { document.getElementById('b2_cham').value=''; document.getElementById('b2_tong').value=''; document.getElementById('b2_them').value=''; document.getElementById('b2_bo').value=''; }
+        if(blockIndex === 3) { document.getElementById('b3_bo').value=''; document.getElementById('b3_tong').value=''; document.getElementById('b3_them').value=''; document.getElementById('b3_bo_so').value=''; }
+        document.getElementById(`b${blockIndex}_kq`).value = '';
+        document.getElementById(`b${blockIndex}_count`).innerText = '(0 số)';
+        return false;
+    }
+
+    let sets = [];
+    let themSet = new Set(), boSet = new Set();
+    let inputsCount = 0;
+
+
+    function processInput(id, type) {
+        let val = document.getElementById(id).value.trim();
+        if (val !== "") {
+            sets.push(td_GetNumbers(type, val));
+            inputsCount++;
+        }
+    }
+
+
+    if (blockIndex === 1) {
+        processInput('b1_dau', 'dau');
+        processInput('b1_duoi', 'duoi');
+        processInput('b1_tong', 'tong');
+        themSet = td_GetList(document.getElementById('b1_them').value);
+        boSet = td_GetList(document.getElementById('b1_bo').value);
+    } else if (blockIndex === 2) {
+        processInput('b2_cham', 'cham');
+        processInput('b2_tong', 'tong');
+        themSet = td_GetList(document.getElementById('b2_them').value);
+        boSet = td_GetList(document.getElementById('b2_bo').value);
+    } else if (blockIndex === 3) {
+        processInput('b3_bo', 'bo');
+        processInput('b3_tong', 'tong');
+        themSet = td_GetList(document.getElementById('b3_them').value);
+        boSet = td_GetList(document.getElementById('b3_bo_so').value);
+    }
+
+    let result = new Set();
+
+    if (action === 'kethop') {
+   
+        if (inputsCount < 2) {
+            document.getElementById(`b${blockIndex}_kq`).value = '';
+            document.getElementById(`b${blockIndex}_count`).innerText = '(0 số)';
+            return false;
+        }
+        result = new Set(sets[0]);
+        for(let i = 1; i < sets.length; i++) {
+            result = new Set([...result].filter(x => sets[i].has(x)));
+        }
+    } else if (action === 'layhet') {
+        if (inputsCount === 0 && themSet.size === 0) return false;
+        sets.forEach(s => s.forEach(num => result.add(num)));
+    } else if (action === 'loaihet') {
+        if (inputsCount === 0) return false;
+        let fullDan = new Set();
+        for(let i=0; i<100; i++) fullDan.add(i < 10 ? '0'+i : ''+i);
+        sets.forEach(s => s.forEach(num => fullDan.delete(num)));
+        result = fullDan;
+    }
+
+    themSet.forEach(num => result.add(num));
+    boSet.forEach(num => result.delete(num));
+
+    let finalArr = Array.from(result).sort((a,b) => a.localeCompare(b));
+    if (finalArr.length === 0 && inputsCount === 0 && themSet.size === 0) {
+        document.getElementById(`b${blockIndex}_kq`).value = '';
+        document.getElementById(`b${blockIndex}_count`).innerText = '(0 số)';
+    } else {
+        document.getElementById(`b${blockIndex}_kq`).value = finalArr.join(',');
+        document.getElementById(`b${blockIndex}_count`).innerText = `(${finalArr.length} số)`;
+    }
+
+    return false;
+}
+</script>
+
+<script type="text/javascript">
+function getCombinations(arr, k) {
+    var result = [];
+    if (arr.length < k) return result;
+    if (k === 1) {
+        for (var i = 0; i < arr.length; i++) {
+            result.push([arr[i]]);
+        }
+        return result;
+    }
+    for (var i = 0; i < arr.length - k + 1; i++) {
+        var head = arr.slice(i, i + 1);
+        var tailcombs = getCombinations(arr.slice(i + 1), k - 1);
+        for (var j = 0; j < tailcombs.length; j++) {
+            result.push(head.concat(tailcombs[j]));
+        }
+    }
+    return result;
+}
+
+function XuLyGhepXien(k) {
+    var inputVal = document.getElementById('xien_input').value;
+    var outputArea = document.getElementById('xien_output');
+    var countLabel = document.getElementById('xien_count');
+
+    var matches = inputVal.match(/\d{2}/g);
+    if (!matches) {
+        outputArea.value = 'THÔNG BÁO: Vui lòng nhập vào các con số hợp lệ (dạng 2 chữ số)!';
+        countLabel.innerText = '(0 cặp)';
+        return;
+    }
+
+    var uniqueNums = Array.from(new Set(matches)).sort();
+    if (uniqueNums.length < k) {
+        outputArea.value = 'THÔNG BÁO: Cần tối thiểu ' + k + ' số khác nhau để có thể tiến hành ghép xiên ' + k + '!';
+        countLabel.innerText = '(0 cặp)';
+        return;
+    }
+    
+    var combinations = getCombinations(uniqueNums, k);
+    
+    var pairs = combinations.map(function(c) {
+        return c.join('&');
+    });
+     
+    outputArea.value = pairs.join(', ');
+    countLabel.innerText = '(' + pairs.length + ' cặp)';
+    
+    var color = k === 2 ? '#e67e22' : (k === 3 ? '#d35400' : '#c0392b');
+    countLabel.style.backgroundColor = color;
+}
+
+function XoaXien() {
+    document.getElementById('xien_input').value = '';
+    document.getElementById('xien_output').value = '';
+    document.getElementById('xien_count').innerText = '(0 cặp)';
+    document.getElementById('xien_count').style.backgroundColor = '#e67e22';
+}
+
+function CopyXien() {
+    var copyText = document.getElementById('xien_output');
+    if (!copyText.value || copyText.value.startsWith('THÔNG BÁO:')) {
+        copyText.value = 'THÔNG BÁO: Chưa có kết quả hợp lệ để copy!';
+        return;
+    }
+    var originalVal = copyText.value;
+    copyText.select();
+    document.execCommand("copy");
+
+    copyText.value = '✔ ĐÃ COPY THÀNH CÔNG BỘ SỐ XIÊN!';
+    setTimeout(function() {
+        copyText.value = originalVal;
+    }, 2000);
+}
+</script>
+</body>
+</html>
